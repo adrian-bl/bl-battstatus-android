@@ -23,9 +23,11 @@ import android.os.IBinder;
 import android.util.Log;
 import android.content.Intent;
 
+import java.io.FileOutputStream;
 import java.io.FileInputStream;
 import java.io.DataInputStream;
 import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.File;
@@ -34,12 +36,15 @@ import java.io.InputStream;
 public class BlinkenlightsBatteryService extends Service {
 	
 	private final static String T = "BlinkenlightsBatteryService.class: ";
+	private final static String FN_PERCENTAGE = "blb-percentage";
+	private final static String FN_PLUGGED    = "blb-plugstatus";
+	private final static String FN_TIMESTAMP  = "blb-ts";
+	private final static String motofile = "/sys/devices/platform/cpcap_battery/power_supply/battery/charge_counter";
 	private final IBinder bb_binder = new LocalBinder();
-	
 	private NotificationManager notify_manager;
 	private Intent              notify_intent;
 	private PendingIntent       notify_pintent;
-	
+	private final static int first_icn = R.drawable.r000;
 	@Override
 	public IBinder onBind(Intent i) {
 		return bb_binder;
@@ -75,45 +80,83 @@ public class BlinkenlightsBatteryService extends Service {
 			int level     = intent.getIntExtra("level", 0);
 			int scale     = intent.getIntExtra("scale", 100);
 			int temp      = intent.getIntExtra("temperature", 0);
-			int plugged   = intent.getIntExtra("plugged",0);
 			int voltage   = intent.getIntExtra("voltage",0);
+			int curplug   = ( intent.getIntExtra("plugged",0) == 0 ? 0 : 1 );
 			int prcnt     = level*100/scale;
-			int icon      = R.drawable.r000;
-			File motofile = new File("/sys/devices/platform/cpcap_battery/power_supply/battery/charge_counter");
+			
+			int oldprcnt  = tryRead(FN_PERCENTAGE);
+			int oldplug   = tryRead(FN_PLUGGED);
+			
 			
 			/* defy (and other stupid-as-heck motorola phones return the capacity in 10% steps.
 			   ..but sysfs knows the real 1%-res value */
-			if(motofile.exists()) {
-				Log.d(T,"Ooops, running on stupid motorola hardware");
-				try {
-					String              foo = "";
-					FileInputStream     fis = new FileInputStream(motofile);
-					BufferedInputStream bis = new BufferedInputStream(fis);
-					DataInputStream     dis = new DataInputStream(bis);
-					foo   = dis.readLine();
-					prcnt = Integer.valueOf(foo).intValue();
-					
-					dis.close();
-					bis.close();
-					fis.close();
-				}
-				catch(Exception e) {
-					Log.e(T,"Exception: "+e);
+			if((new File(motofile)).exists()) {
+				int xresult = pathToInt(motofile);
+				if(xresult >= 0) {
+					prcnt = xresult;
 				}
 			}
 			
-			String ntitle = (plugged == 0 ? "On Battery since" : "Connected since") + " ????";
-			String ntext  = prcnt+"%  voltage: "+(voltage==0? "??" : voltage);
-			       icon  += prcnt;
+			/* percentage is now good in any case: check current status */
 			
-			Log.d(T,"current battery percentage at " + prcnt);
-			Log.d(T,"voltage is "+voltage);
+			/* plug changed OR we reached 100 percent */
+			if( (curplug != oldplug) || (prcnt == 100) ) {
+				Log.v(T, "++++ STATUS CHANGE +++++ FROM "+oldplug+" TO "+curplug);
+				tryWrite(FN_PLUGGED, curplug);
+				tryWrite(FN_PERCENTAGE, prcnt);
+				oldprcnt = prcnt;
+			}
 			
-			Notification this_notify = new Notification(icon, null, System.currentTimeMillis());
+			
+			String vx = String.valueOf(voltage/1000.0);
+			String ntext  = "" + (voltage == 0 ? "" : "voltage: "+vx+"V ");
+			String ntitle = (curplug == 0 ? "Discharging" : "Charging")+" from "+oldprcnt+"% since ?";
+			
+			if(prcnt == 100 && curplug != 0) {
+				ntitle = "Fully charged since ?";
+			}
+			
+			
+			/* create new notify with updated icon: icons are sorted integers :-) */
+			Notification this_notify = new Notification((first_icn+prcnt), null, System.currentTimeMillis());
 			this_notify.flags |= Notification.FLAG_ONGOING_EVENT | Notification.FLAG_NO_CLEAR;
 			this_notify.setLatestEventInfo(getApplicationContext(), ntitle, ntext, notify_pintent);
 			notify_manager.notify(0, this_notify);
+			
+			
 		}
 	};
+	
+	private final void tryWrite(String storage_name, int value) {
+		try {
+			String outdata = value+"\n";
+			FileOutputStream fos = openFileOutput(storage_name, Context.MODE_PRIVATE);
+			BufferedOutputStream bos = new BufferedOutputStream(fos);
+			bos.write(outdata.getBytes());
+			bos.close();
+			fos.close();
+		} catch(Exception e) { Log.v(T, "tryWrite: "+e); }
+	}
+	
+	private final int tryRead(String storage_name) {
+		return pathToInt(getFilesDir()+"/"+storage_name);
+	}
+	
+	private final int pathToInt(String absolute_path) {
+		int result = -1;
+		
+		try {
+			String foo;
+			FileInputStream fis     = new FileInputStream(absolute_path);
+			BufferedInputStream bis = new BufferedInputStream(fis);
+			DataInputStream     dis = new DataInputStream(bis);
+			foo   = dis.readLine();
+			dis.close();
+			bis.close();
+			fis.close();
+			result = Integer.valueOf(foo).intValue();
+		} catch(Exception e) { Log.v(T,"pathToInit: "+e); }
+		return result;
+	}
 	
 }
