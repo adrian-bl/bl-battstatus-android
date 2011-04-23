@@ -15,7 +15,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 
-public class BatteryActivity extends Activity
+public class BlinkenlightsBattery extends Activity
 {
 	private Intent bb_service_intent;
 	private final BBServiceConnection bb_service_connection = new BBServiceConnection();

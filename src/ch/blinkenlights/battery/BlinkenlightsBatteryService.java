@@ -10,6 +10,9 @@
 package ch.blinkenlights.battery;
 
 import android.app.Service;
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -22,12 +25,13 @@ import android.content.Intent;
 
 public class BlinkenlightsBatteryService extends Service {
 	
-	private final static String T = "BBService";
+	private final static String T = "BlinkenlightsBatteryService.class: ";
 	private final IBinder bb_binder = new LocalBinder();
+	
+	private NotificationManager notify_manager;
 	
 	@Override
 	public IBinder onBind(Intent i) {
-		Log.v(T,"Returning binder");
 		return bb_binder;
 	}
 	
@@ -36,16 +40,17 @@ public class BlinkenlightsBatteryService extends Service {
 			return BlinkenlightsBatteryService.this;
 		}
 	}
-
+	
 	
 	@Override
 	public void onCreate() {
-		Log.v(T, "onCreate called - should startup service");
+		Log.d(T, "registering receiver");
+		notify_manager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 		registerReceiver(bb_bcreceiver, new IntentFilter(Intent.ACTION_BATTERY_CHANGED));
 	}
 	
 	public void onDestory() {
-		Log.v(T, "onDestory - removing receiver");
+		Log.d(T, "unregistering receiver");
 		unregisterReceiver(bb_bcreceiver);
 	}
 	
@@ -55,8 +60,11 @@ public class BlinkenlightsBatteryService extends Service {
 		public void onReceive(Context context, Intent intent) {
 			int level = intent.getIntExtra("level", 50);
 			int scale = intent.getIntExtra("scale", 100);
+			int temp  = intent.getIntExtra("temperature", 0); // can be 0!
 			int prcnt = level*100/scale;
-			Log.v(T," *** RECEIVED *** " + prcnt);
+			Log.d(T,"current battery percentage at " + prcnt);
+			
+			Notification this_notify = new Notification(R.drawable.test, "Test text", System.currentTimeMillis());
 		}
 	};
 	
