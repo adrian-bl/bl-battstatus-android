@@ -1,0 +1,10 @@
+How to compile:
+
+
+Run
+ $ android update project --path . --target "android-10"
+ $ ./update_icons.sh
+
+then:
+ $ ant debug
+

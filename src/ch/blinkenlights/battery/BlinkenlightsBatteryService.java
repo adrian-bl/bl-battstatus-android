@@ -35,16 +35,18 @@ import java.io.InputStream;
 
 public class BlinkenlightsBatteryService extends Service {
 	
-	private final static String T = "BlinkenlightsBatteryService.class: ";
-	private final static String FN_PERCENTAGE = "blb-percentage";
-	private final static String FN_PLUGGED    = "blb-plugstatus";
-	private final static String FN_TIMESTAMP  = "blb-ts";
-	private final static String motofile = "/sys/devices/platform/cpcap_battery/power_supply/battery/charge_counter";
-	private final IBinder bb_binder = new LocalBinder();
+	private final static String T             = "BlinkenlightsBatteryService.class: ";                                       // Log Token
+	private final static String FN_PERCENTAGE = "blb-percentage";                                                            // File to store percentage
+	private final static String FN_PLUGGED    = "blb-plugstatus";                                                            // File to store plugstatus
+	private final static String FN_TIMESTAMP  = "blb-ts";                                                                    // Latest event timestamp
+	private final static String motofile      = "/sys/devices/platform/cpcap_battery/power_supply/battery/charge_counter";   // Motorola-Percentage file
+	private final IBinder bb_binder           = new LocalBinder();
+	private final static int first_icn        = R.drawable.r000;                                                             // First icon ID
+	
 	private NotificationManager notify_manager;
 	private Intent              notify_intent;
 	private PendingIntent       notify_pintent;
-	private final static int first_icn = R.drawable.r000;
+	
 	@Override
 	public IBinder onBind(Intent i) {
 		return bb_binder;
@@ -56,11 +58,8 @@ public class BlinkenlightsBatteryService extends Service {
 		}
 	}
 	
-	
 	@Override
 	public void onCreate() {
-		Log.d(T, "registering receiver");
-		
 		notify_manager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 		notify_intent  = new Intent(this, BlinkenlightsBattery.class);
 		notify_pintent = PendingIntent.getActivity(this, 0, notify_intent, 0);
@@ -69,11 +68,10 @@ public class BlinkenlightsBatteryService extends Service {
 	}
 	
 	public void onDestory() {
-		Log.d(T, "unregistering receiver");
 		unregisterReceiver(bb_bcreceiver);
 	}
 	
-	// fixme: need to register
+	/* Receives battery_changed events */
 	private final BroadcastReceiver bb_bcreceiver = new BroadcastReceiver() {
 		@Override
 		public void onReceive(Context context, Intent intent) {
@@ -84,15 +82,17 @@ public class BlinkenlightsBatteryService extends Service {
 			int curplug   = ( intent.getIntExtra("plugged",0) == 0 ? 0 : 1 );
 			int prcnt     = level*100/scale;
 			
+			/* TRY to get old values. -1 if failed */
 			int oldprcnt  = tryRead(FN_PERCENTAGE);
 			int oldplug   = tryRead(FN_PLUGGED);
 			int oldts     = tryRead(FN_TIMESTAMP);
 			
 			/* defy (and other stupid-as-heck motorola phones return the capacity in 10% steps.
 			   ..but sysfs knows the real 1%-res value */
+			   //FIXME: How 'heavy' is new File... ? we could do this check at startup and set a bool
 			if((new File(motofile)).exists()) {
 				int xresult = pathToInt(motofile);
-				if(xresult >= 0) {
+				if(xresult >= 0) { // only use value if read didn't fail. ;-)
 					prcnt = xresult;
 				}
 			}
@@ -110,6 +110,7 @@ public class BlinkenlightsBatteryService extends Service {
 				tryWrite(FN_TIMESTAMP, oldts);
 			}
 			
+			// prepare interface texts
 			String vx     = String.valueOf(voltage/1000.0);
 			String ntext  = "" + (voltage == 0 ? "" : "voltage: "+vx+"V ");
 			String ntitle = (curplug == 0 ? "Discharging" : "Charging")+" from "+oldprcnt+"%";
