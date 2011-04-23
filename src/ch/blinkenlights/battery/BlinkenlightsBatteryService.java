@@ -72,28 +72,34 @@ public class BlinkenlightsBatteryService extends Service {
 	private final BroadcastReceiver bb_bcreceiver = new BroadcastReceiver() {
 		@Override
 		public void onReceive(Context context, Intent intent) {
-			int level   = intent.getIntExtra("level", 0);
-			int scale   = intent.getIntExtra("scale", 100);
-			int temp    = intent.getIntExtra("temperature", 0);
-			int plugged = intent.getIntExtra("plugged",0);
-			int voltage = intent.getIntExtra("voltage",0);
-			int prcnt   = level*100/scale;
-			int icon    = R.drawable.r000;
-			File moto_prcnt = new File("/sys/devices/platform/cpcap_battery/power_supply/battery/charge_counter");
-			try {
-				String              foo = "";
-				FileInputStream     fis = new FileInputStream(moto_prcnt);
-				BufferedInputStream bis = new BufferedInputStream(fis);
-				DataInputStream     dis = new DataInputStream(bis);
-				foo   = dis.readLine();
-				prcnt = Integer.valueOf(foo).intValue();
-				
-				dis.close();
-				bis.close();
-				fis.close();
-			}
-			catch(Exception e) {
-				Log.d(T,"Exception: "+e);
+			int level     = intent.getIntExtra("level", 0);
+			int scale     = intent.getIntExtra("scale", 100);
+			int temp      = intent.getIntExtra("temperature", 0);
+			int plugged   = intent.getIntExtra("plugged",0);
+			int voltage   = intent.getIntExtra("voltage",0);
+			int prcnt     = level*100/scale;
+			int icon      = R.drawable.r000;
+			File motofile = new File("/sys/devices/platform/cpcap_battery/power_supply/battery/charge_counter");
+			
+			/* defy (and other stupid-as-heck motorola phones return the capacity in 10% steps.
+			   ..but sysfs knows the real 1%-res value */
+			if(motofile.exists()) {
+				Log.d(T,"Ooops, running on stupid motorola hardware");
+				try {
+					String              foo = "";
+					FileInputStream     fis = new FileInputStream(motofile);
+					BufferedInputStream bis = new BufferedInputStream(fis);
+					DataInputStream     dis = new DataInputStream(bis);
+					foo   = dis.readLine();
+					prcnt = Integer.valueOf(foo).intValue();
+					
+					dis.close();
+					bis.close();
+					fis.close();
+				}
+				catch(Exception e) {
+					Log.e(T,"Exception: "+e);
+				}
 			}
 			
 			String ntitle = (plugged == 0 ? "On Battery since" : "Connected since") + " ????";

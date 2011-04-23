@@ -14,21 +14,23 @@ foreach my $num (0..100) {
 	my $cc = $colors[$idx];
 	$im->Read("xc:transparent");
 
-	$im->Annotate(text=>"$num",, fill=>'black', font=>"DroidSans-Bold.ttf", pointsize=>15, antialias=>'true', gravity=>"Center", x=>0, y=>1);
-	$im->Annotate(text=>"$num",, fill=>'black', font=>"DroidSans-Bold.ttf", pointsize=>15, antialias=>'true', gravity=>"Center", x=>0, y=>-1);
-	$im->Annotate(text=>"$num",, fill=>'black', font=>"DroidSans-Bold.ttf", pointsize=>15, antialias=>'true', gravity=>"Center", x=>-2, y=>1);
-	$im->Annotate(text=>"$num",, fill=>'black', font=>"DroidSans-Bold.ttf", pointsize=>15, antialias=>'true', gravity=>"Center", x=>-2, y=>-1);
-	$im->Annotate(text=>"$num",, fill=>$tc,     font=>"DroidSans-Bold.ttf", pointsize=>15, antialias=>'true', gravity=>"Center", x=>-1, y=>0);
-	
-	#$im->Draw(primitive=>'circle',stroke=>"#$cc", strokewidth=>3, fill=>'none', points=>"18,18 7,7");
 	
 	my $bump = int(270 - ($num*3.60));
 	   $bump ||= 1;
 	   $bump-- if !$num;
-	print "$num -> $bump\n";
 	
-	$im->Draw(primitive=>'ellipse', stroke=>"grey", fill=>'none', strokewidth=>4 , points=>"18,18 15,15 0,360");
-	$im->Draw(primitive=>'ellipse', stroke=>"#$cc", fill=>'none', strokewidth=>4 , points=>"18,18 15,15 $bump,270");
+	my $fsize = 16;
+	   $fsize = 16 if $num==100;
+	
+	$im->Draw(primitive=>'ellipse', stroke=>"grey", fill=>'none', strokewidth=>6 , points=>"18,18 15,15 0,360");
+	$im->Draw(primitive=>'ellipse', stroke=>"#$cc", fill=>'none', strokewidth=>6 , points=>"18,18 15,15 $bump,270");
+
+	$im->Annotate(text=>"$num",, fill=>'black', font=>"DroidSans-Bold.ttf", pointsize=>$fsize, antialias=>'true', gravity=>"Center", x=>0, y=>1);
+	$im->Annotate(text=>"$num",, fill=>'black', font=>"DroidSans-Bold.ttf", pointsize=>$fsize, antialias=>'true', gravity=>"Center", x=>0, y=>-1);
+	$im->Annotate(text=>"$num",, fill=>'black', font=>"DroidSans-Bold.ttf", pointsize=>$fsize, antialias=>'true', gravity=>"Center", x=>-2, y=>1);
+	$im->Annotate(text=>"$num",, fill=>'black', font=>"DroidSans-Bold.ttf", pointsize=>$fsize, antialias=>'true', gravity=>"Center", x=>-2, y=>-1);
+	$im->Annotate(text=>"$num",, fill=>$tc,     font=>"DroidSans-Bold.ttf", pointsize=>$fsize, antialias=>'true', gravity=>"Center", x=>-1, y=>0);
+
 	
 	$im->Write(sprintf("r%03d.png",$num));
 }
