@@ -86,7 +86,7 @@ public class BlinkenlightsBatteryService extends Service {
 			
 			int oldprcnt  = tryRead(FN_PERCENTAGE);
 			int oldplug   = tryRead(FN_PLUGGED);
-			
+			int oldts     = tryRead(FN_TIMESTAMP);
 			
 			/* defy (and other stupid-as-heck motorola phones return the capacity in 10% steps.
 			   ..but sysfs knows the real 1%-res value */
@@ -102,18 +102,33 @@ public class BlinkenlightsBatteryService extends Service {
 			/* plug changed OR we reached 100 percent */
 			if( (curplug != oldplug) || (prcnt == 100) ) {
 				Log.v(T, "++++ STATUS CHANGE +++++ FROM "+oldplug+" TO "+curplug);
+				oldprcnt = prcnt;
+				oldts    = unixtimeAsInt();
+				
 				tryWrite(FN_PLUGGED, curplug);
 				tryWrite(FN_PERCENTAGE, prcnt);
-				oldprcnt = prcnt;
+				tryWrite(FN_TIMESTAMP, oldts);
 			}
 			
-			
-			String vx = String.valueOf(voltage/1000.0);
+			String vx     = String.valueOf(voltage/1000.0);
 			String ntext  = "" + (voltage == 0 ? "" : "voltage: "+vx+"V ");
-			String ntitle = (curplug == 0 ? "Discharging" : "Charging")+" from "+oldprcnt+"% since ?";
+			String ntitle = (curplug == 0 ? "Discharging" : "Charging")+" from "+oldprcnt+"%";
+			
 			
 			if(prcnt == 100 && curplug != 0) {
-				ntitle = "Fully charged since ?";
+				ntitle = "Fully charged since FIXME";
+			}
+			else {
+				int timediff = unixtimeAsInt() - oldts;
+				if(timediff >= 60*60) {
+					ntitle += " since "+(timediff/60/60)+" Hour";
+					if(timediff >= 60*60*2) {
+						ntitle += "s";
+					}
+				}
+				else if(timediff >= 120) {
+					ntitle += " since "+(timediff/60)+" Minutes";
+				}
 			}
 			
 			
@@ -159,4 +174,7 @@ public class BlinkenlightsBatteryService extends Service {
 		return result;
 	}
 	
+	private final int unixtimeAsInt() {
+		return (int) (System.currentTimeMillis() / 1000L);
+	}
 }
