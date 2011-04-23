@@ -78,7 +78,7 @@ public class BlinkenlightsBatteryService extends Service {
 			int plugged = intent.getIntExtra("plugged",0);
 			int voltage = intent.getIntExtra("voltage",0);
 			int prcnt   = level*100/scale;
-			int icon    = R.drawable.r000;
+			
 			File moto_prcnt = new File("/sys/devices/platform/cpcap_battery/power_supply/battery/charge_counter");
 			try {
 				String              foo = "";
@@ -98,12 +98,11 @@ public class BlinkenlightsBatteryService extends Service {
 			
 			String ntitle = (plugged == 0 ? "On Battery since" : "Connected since") + " ????";
 			String ntext  = prcnt+"%  voltage: "+(voltage==0? "??" : voltage);
-			       icon  += prcnt;
 			
 			Log.d(T,"current battery percentage at " + prcnt);
 			Log.d(T,"voltage is "+voltage);
 			
-			Notification this_notify = new Notification(icon, null, System.currentTimeMillis());
+			Notification this_notify = new Notification(R.drawable.test, null, System.currentTimeMillis());
 			this_notify.flags |= Notification.FLAG_ONGOING_EVENT | Notification.FLAG_NO_CLEAR;
 			this_notify.setLatestEventInfo(getApplicationContext(), ntitle, ntext, notify_pintent);
 			notify_manager.notify(0, this_notify);
