@@ -32,6 +32,8 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.File;
 import java.io.InputStream;
+import java.util.Date;
+import java.text.SimpleDateFormat;
 
 public class BlinkenlightsBatteryService extends Service {
 	
@@ -40,6 +42,7 @@ public class BlinkenlightsBatteryService extends Service {
 	private final static String FN_PLUGGED    = "blb-plugstatus";                                                            // File to store plugstatus
 	private final static String FN_TIMESTAMP  = "blb-ts";                                                                    // Latest event timestamp
 	private final static String motofile      = "/sys/devices/platform/cpcap_battery/power_supply/battery/charge_counter";   // Motorola-Percentage file
+	private boolean motorola_mode             = false;                                                                       // Use motofile if TRUE
 	private final IBinder bb_binder           = new LocalBinder();
 	private final static int first_icn        = R.drawable.r000;                                                             // First icon ID
 	
@@ -60,6 +63,13 @@ public class BlinkenlightsBatteryService extends Service {
 	
 	@Override
 	public void onCreate() {
+		
+		/* check if we are running on motorola hardware */
+		if((new File(motofile)).exists()) {
+			motorola_mode = true;
+		}
+		
+		/* create notification manager stuff and register ourself as a service */
 		notify_manager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 		notify_intent  = new Intent(this, BlinkenlightsBattery.class);
 		notify_pintent = PendingIntent.getActivity(this, 0, notify_intent, 0);
@@ -90,9 +100,9 @@ public class BlinkenlightsBatteryService extends Service {
 			/* defy (and other stupid-as-heck motorola phones return the capacity in 10% steps.
 			   ..but sysfs knows the real 1%-res value */
 			   //FIXME: How 'heavy' is new File... ? we could do this check at startup and set a bool
-			if((new File(motofile)).exists()) {
+			if(motorola_mode) {
 				int xresult = pathToInt(motofile);
-				if(xresult >= 0) { // only use value if read didn't fail. ;-)
+				if(xresult >= 0) { // would return -1 if read failed (shouldn't happen)
 					prcnt = xresult;
 				}
 			}
@@ -113,24 +123,20 @@ public class BlinkenlightsBatteryService extends Service {
 			// prepare interface texts
 			String vx     = String.valueOf(voltage/1000.0);
 			String ntext  = "" + (voltage == 0 ? "" : "voltage: "+vx+"V ");
-			String ntitle = (curplug == 0 ? "Discharging" : "Charging")+" from "+oldprcnt+"%";
+			String ntitle = (prcnt == 100 && curplug == 1 ? "Fully charged" : (curplug == 0 ? "Discharging from "+prcnt+"%" : "Charging from "+prcnt+"%"));
+			int timediff  = unixtimeAsInt() - oldts;
 			
-			
-			if(prcnt == 100 && curplug != 0) {
-				ntitle = "Fully charged since FIXME";
+			if(timediff > 60*60*2) {
+				ntitle += " since "+ (int)(timediff/60/60) + " hours";
 			}
 			else {
-				int timediff = unixtimeAsInt() - oldts;
-				if(timediff >= 60*60) {
-					ntitle += " since "+(timediff/60/60)+" Hour";
-					if(timediff >= 60*60*2) {
-						ntitle += "s";
-					}
-				}
-				else if(timediff >= 120) {
-					ntitle += " since "+(timediff/60)+" Minutes";
-				}
+				SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
+				Log.v(T, sdf.format(new Date((long)unixtimeAsInt()*1000)));
+				Log.v(T, unixtimeAsInt()+"");
+				ntitle += " since "+sdf.format( new Date( (long)oldts*1000 ) );
 			}
+			
+			Log.v(T,"STATUS "+ntitle);
 			
 			
 			/* create new notify with updated icon: icons are sorted integers :-) */
@@ -138,8 +144,6 @@ public class BlinkenlightsBatteryService extends Service {
 			this_notify.flags |= Notification.FLAG_ONGOING_EVENT | Notification.FLAG_NO_CLEAR;
 			this_notify.setLatestEventInfo(getApplicationContext(), ntitle, ntext, notify_pintent);
 			notify_manager.notify(0, this_notify);
-			
-			
 		}
 	};
 	
