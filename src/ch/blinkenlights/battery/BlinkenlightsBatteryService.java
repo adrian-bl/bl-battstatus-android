@@ -180,4 +180,8 @@ public class BlinkenlightsBatteryService extends Service {
 	private final int unixtimeAsInt() {
 		return (int) (System.currentTimeMillis() / 1000L);
 	}
+	
+	public void foo() {
+		Log.v(T, "Hi there!");
+	}
 }

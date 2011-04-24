@@ -18,8 +18,6 @@ import android.util.Log;
 public class BlinkenlightsBattery extends Activity
 {
 	private Intent bb_service_intent;
-	private final BBServiceConnection bb_service_connection = new BBServiceConnection();
-
 	/** Called when the activity is first created. */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -29,7 +27,6 @@ public class BlinkenlightsBattery extends Activity
 		
 		bb_service_intent = new Intent(this, BlinkenlightsBatteryService.class);
 		startService(bb_service_intent);
-		bindService(bb_service_intent, bb_service_connection, 0);
-		
 	}
+	
 }
