@@ -22,6 +22,7 @@ import android.os.Handler;
 import android.os.IBinder;
 import android.util.Log;
 import android.content.Intent;
+import android.text.format.DateFormat;
 
 import java.io.FileOutputStream;
 import java.io.FileInputStream;
@@ -85,6 +86,7 @@ public class BlinkenlightsBatteryService extends Service {
 	private final BroadcastReceiver bb_bcreceiver = new BroadcastReceiver() {
 		@Override
 		public void onReceive(Context context, Intent intent) {
+			Context ctx   = getApplicationContext();
 			int level     = intent.getIntExtra("level", 0);
 			int scale     = intent.getIntExtra("scale", 100);
 			int temp      = intent.getIntExtra("temperature", 0);
@@ -130,19 +132,19 @@ public class BlinkenlightsBatteryService extends Service {
 				ntitle += " since "+ (int)(timediff/60/60) + " hours";
 			}
 			else {
-				SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
+				String fmt_style     = (DateFormat.is24HourFormat(ctx) ? "HH:mm" : "h:mm aa");
+				SimpleDateFormat sdf = new SimpleDateFormat(fmt_style);
 				Log.v(T, sdf.format(new Date((long)unixtimeAsInt()*1000)));
 				Log.v(T, unixtimeAsInt()+"");
 				ntitle += " since "+sdf.format( new Date( (long)oldts*1000 ) );
 			}
 			
-			Log.v(T,"STATUS "+ntitle);
 			
 			
 			/* create new notify with updated icon: icons are sorted integers :-) */
 			Notification this_notify = new Notification((first_icn+prcnt), null, System.currentTimeMillis());
 			this_notify.flags |= Notification.FLAG_ONGOING_EVENT | Notification.FLAG_NO_CLEAR;
-			this_notify.setLatestEventInfo(getApplicationContext(), ntitle, ntext, notify_pintent);
+			this_notify.setLatestEventInfo(ctx, ntitle, ntext, notify_pintent);
 			notify_manager.notify(0, this_notify);
 		}
 	};
