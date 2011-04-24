@@ -22,6 +22,7 @@ import android.content.ComponentName;
 public class BlinkenlightsBattery extends Activity
 {
 	private Intent bb_service_intent;
+	private final BBServiceConnection bb_service_connection = new BBServiceConnection();
 	/** Called when the activity is first created. */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -36,12 +37,20 @@ public class BlinkenlightsBattery extends Activity
 			setContentView(R.layout.oops);
 		}
 		else {
+			bindService(bb_service_intent, bb_service_connection, 0);
 			setContentView(R.layout.main);
 			((Button) findViewById(R.id.hide)).setOnClickListener(cb_hideMview);
 			((Button) findViewById(R.id.kill)).setOnClickListener(cb_harakiri);
 		}
 	}
+	
+	@Override
+	protected void onDestroy() {
+		super.onDestroy();
+		unbindService(bb_service_connection);
+	}
 
+	
 	OnClickListener cb_hideMview = new OnClickListener() {
 		public void onClick(View v) {
 			finish();
@@ -50,6 +59,8 @@ public class BlinkenlightsBattery extends Activity
 	
 	OnClickListener cb_harakiri = new OnClickListener() {
 		public void onClick(View v) {
+			bb_service_connection.bbsvc.harakiri();
+			stopService(bb_service_intent);
 			finish();
 		}
 	};

@@ -76,7 +76,7 @@ public class BlinkenlightsBatteryService extends Service {
 		notify_pintent = PendingIntent.getActivity(this, 0, notify_intent, 0);
 		
 		registerReceiver(bb_bcreceiver, new IntentFilter(Intent.ACTION_BATTERY_CHANGED));
-		Log.v(T,"onCreate() finished - broadcaster registered");
+		Log.v(T,"+++++ onCreate() finished - broadcaster registered +++++");
 	}
 	
 	public void onDestory() {
@@ -182,7 +182,9 @@ public class BlinkenlightsBatteryService extends Service {
 		return (int) (System.currentTimeMillis() / 1000L);
 	}
 	
-	public void foo() {
-		Log.v(T, "Hi there!");
+	public void harakiri() {
+		Log.v(T, "terminating myself - unregistering receiver");
+		unregisterReceiver(bb_bcreceiver);
+		notify_manager.cancelAll();
 	}
 }
