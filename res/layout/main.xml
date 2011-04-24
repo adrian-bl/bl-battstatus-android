@@ -22,6 +22,8 @@
 
 <Button android:layout_marginTop="20dip" android:layout_gravity="center" android:id="@+id/kill" style="@style/ActionButton" android:text="Terminate application" />
 
+<Button android:layout_marginTop="20dip" android:layout_gravity="center" android:id="@+id/debug" style="@style/ActionButton" android:text="Dededeeedebug!" />
+
 	
 </LinearLayout>
 

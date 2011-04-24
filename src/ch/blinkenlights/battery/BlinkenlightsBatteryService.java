@@ -114,7 +114,8 @@ public class BlinkenlightsBatteryService extends Service {
 			
 			/* plug changed OR we reached 100 percent */
 			if( (curplug != oldplug) || (prcnt == 100) ) {
-				Log.d(T, "++++ STATUS CHANGE +++++ FROM "+oldplug+" TO "+curplug);
+				Log.d(T, "++ STATUS CHANGE ++: oldplug="+oldplug+", curplug="+curplug+", percentage="+prcnt);
+				
 				oldprcnt = prcnt;
 				oldts    = unixtimeAsInt();
 				
@@ -126,7 +127,8 @@ public class BlinkenlightsBatteryService extends Service {
 			// prepare interface texts
 			String vx     = String.valueOf(voltage/1000.0);
 			String ntext  = "" + (voltage == 0 ? "" : "voltage: "+vx+"V ");
-			String ntitle = (prcnt == 100 && curplug == 1 ? "Fully charged" : (curplug == 0 ? "Discharging from "+prcnt+"%" : "Charging from "+prcnt+"%"));
+			       ntext += " // currently at "+prcnt+"%";
+			String ntitle = ((prcnt == 100 && curplug == 1) ? "Fully charged" : (curplug == 0 ? "Discharging from "+prcnt+"%" : "Charging from "+prcnt+"%"));
 			int timediff  = unixtimeAsInt() - oldts;
 			
 			if(timediff > 60*60*2) {
@@ -186,5 +188,9 @@ public class BlinkenlightsBatteryService extends Service {
 		Log.v(T, "terminating myself - unregistering receiver");
 		unregisterReceiver(bb_bcreceiver);
 		notify_manager.cancelAll();
+	}
+	
+	public void debug() {
+		Log.v(T, "+++ dumping status ++++");
 	}
 }

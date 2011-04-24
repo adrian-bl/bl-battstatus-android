@@ -42,6 +42,7 @@ public class BlinkenlightsBattery extends Activity
 			setContentView(R.layout.main);
 			((Button) findViewById(R.id.hide)).setOnClickListener(cb_hideMview);
 			((Button) findViewById(R.id.kill)).setOnClickListener(cb_harakiri);
+			((Button) findViewById(R.id.debug)).setOnClickListener(cb_debug);
 		}
 	}
 	
@@ -63,6 +64,12 @@ public class BlinkenlightsBattery extends Activity
 			bb_service_connection.bbsvc.harakiri();
 			stopService(bb_service_intent);
 			finish();
+		}
+	};
+	
+	OnClickListener cb_debug = new OnClickListener() {
+		public void onClick(View v) {
+			bb_service_connection.bbsvc.debug();
 		}
 	};
 	
