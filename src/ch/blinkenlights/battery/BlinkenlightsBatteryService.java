@@ -113,7 +113,7 @@ public class BlinkenlightsBatteryService extends Service {
 			
 			/* plug changed OR we reached 100 percent */
 			if( (curplug != oldplug) || (prcnt == 100) ) {
-				Log.v(T, "++++ STATUS CHANGE +++++ FROM "+oldplug+" TO "+curplug);
+				Log.d(T, "++++ STATUS CHANGE +++++ FROM "+oldplug+" TO "+curplug);
 				oldprcnt = prcnt;
 				oldts    = unixtimeAsInt();
 				
@@ -134,12 +134,8 @@ public class BlinkenlightsBatteryService extends Service {
 			else {
 				String fmt_style     = (DateFormat.is24HourFormat(ctx) ? "HH:mm" : "h:mm aa");
 				SimpleDateFormat sdf = new SimpleDateFormat(fmt_style);
-				Log.v(T, sdf.format(new Date((long)unixtimeAsInt()*1000)));
-				Log.v(T, unixtimeAsInt()+"");
 				ntitle += " since "+sdf.format( new Date( (long)oldts*1000 ) );
 			}
-			
-			
 			
 			/* create new notify with updated icon: icons are sorted integers :-) */
 			Notification this_notify = new Notification((first_icn+prcnt), null, System.currentTimeMillis());
