@@ -128,7 +128,7 @@ public class BlinkenlightsBatteryService extends Service {
 			String vx     = String.valueOf(voltage/1000.0);
 			String ntext  = "" + (voltage == 0 ? "" : "voltage: "+vx+"V ");
 			       ntext += " // currently at "+prcnt+"%";
-			String ntitle = ((prcnt == 100 && curplug == 1) ? "Fully charged" : (curplug == 0 ? "Discharging from "+prcnt+"%" : "Charging from "+prcnt+"%"));
+			String ntitle = ((prcnt == 100 && curplug == 1) ? "Fully charged" : (curplug == 0 ? "Discharging from "+oldprcnt+"%" : "Charging from "+oldprcnt+"%"));
 			int timediff  = unixtimeAsInt() - oldts;
 			
 			if(timediff > 60*60*2) {
