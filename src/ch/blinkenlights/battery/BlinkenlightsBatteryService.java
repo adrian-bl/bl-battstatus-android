@@ -76,6 +76,7 @@ public class BlinkenlightsBatteryService extends Service {
 		notify_pintent = PendingIntent.getActivity(this, 0, notify_intent, 0);
 		
 		registerReceiver(bb_bcreceiver, new IntentFilter(Intent.ACTION_BATTERY_CHANGED));
+		Log.v(T,"onCreate() finished - broadcaster registered");
 	}
 	
 	public void onDestory() {
