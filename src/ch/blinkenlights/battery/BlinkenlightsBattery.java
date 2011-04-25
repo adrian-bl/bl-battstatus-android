@@ -24,13 +24,13 @@ public class BlinkenlightsBattery extends Activity
 {
 	private Intent bb_service_intent;
 	private final BBServiceConnection bb_service_connection = new BBServiceConnection();
-	/** Called when the activity is first created. */
+	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		ComponentName ss_ok;
 		
 		super.onCreate(savedInstanceState);
-		bb_service_intent = new Intent(this, BlinkenlightsBatteryService.class);
+		bb_service_intent = new Intent(getApplicationContext(), BlinkenlightsBatteryService.class);
 		ss_ok = startService(bb_service_intent);
 		
 		if(ss_ok == null) {
@@ -38,6 +38,7 @@ public class BlinkenlightsBattery extends Activity
 			setContentView(R.layout.oops);
 		}
 		else {
+			/* service started up: bind to it and display default dialog */
 			bindService(bb_service_intent, bb_service_connection, 0);
 			setContentView(R.layout.main);
 			((Button) findViewById(R.id.hide)).setOnClickListener(cb_hideMview);
