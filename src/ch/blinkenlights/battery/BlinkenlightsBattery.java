@@ -24,20 +24,23 @@ public class BlinkenlightsBattery extends Activity
 {
 	private Intent bb_service_intent;
 	private final BBServiceConnection bb_service_connection = new BBServiceConnection();
+	private final static String T = "BlinkenlightsBattery";
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		ComponentName ss_ok;
 		
 		super.onCreate(savedInstanceState);
+		
 		bb_service_intent = new Intent(getApplicationContext(), BlinkenlightsBatteryService.class);
 		ss_ok = startService(bb_service_intent);
 		
 		if(ss_ok == null) {
-			Log.e("BlinkenBattery", "Ouch! Could not start service!");
+			Log.e(T, "Ouch! Could not start service!");
 			setContentView(R.layout.oops);
 		}
 		else {
+			Log.d(T, "binding to service");
 			/* service started up: bind to it and display default dialog */
 			bindService(bb_service_intent, bb_service_connection, 0);
 			setContentView(R.layout.main);

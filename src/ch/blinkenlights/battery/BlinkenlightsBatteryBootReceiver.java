@@ -19,7 +19,6 @@ import android.content.Intent;
 public class BlinkenlightsBatteryBootReceiver extends BroadcastReceiver {
 	@Override
 	public void onReceive(Context context, Intent intent) {
-		ComponentName comp = new ComponentName(context.getPackageName(), BlinkenlightsBatteryService.class.getName());
-		context.startService(new Intent().setComponent(comp));
+		context.startService(new Intent(context, BlinkenlightsBatteryService.class));
 	}
 }
