@@ -126,18 +126,20 @@ public class BlinkenlightsBatteryService extends Service {
 			
 			// prepare interface texts
 			String vx     = String.valueOf(voltage/1000.0);
-			String ntext  = "" + (voltage == 0 ? "" : "voltage: "+vx+"V // ");
-			       ntext += " capacity at "+prcnt+"% since:";
-			String ntitle = ((prcnt == 100 && curplug == 1) ? "Fully charged" : (curplug == 0 ? "Discharging from "+oldprcnt+"%" : "Charging from "+oldprcnt+"%"));
+			String ntext  = (voltage == 0 ? "" : gtx(R.string.voltage)+" "+vx+" V // ");
+			       ntext += gtx(R.string.capacity_at)+" "+prcnt+"% "+gtx(R.string.since)+":";
+			String ntitle = ((prcnt == 100 && curplug == 1) ? gtx(R.string.fully_charged) : 
+			                 (curplug == 0 ? gtx(R.string.discharging_from)+" "+oldprcnt+"%" : 
+			                 gtx(R.string.charging_from)+" "+oldprcnt+"%"));
 			int timediff  = unixtimeAsInt() - oldts;
 			
 			if(timediff > 60*60*2) {
-				ntitle += " since "+ (int)(timediff/60/60) + " hours";
+				ntitle += " "+gtx(R.string.since)+" "+(int)(timediff/60/60)+" "+gtx(R.string.hours);
 			}
 			else {
 				String fmt_style     = (DateFormat.is24HourFormat(ctx) ? "HH:mm" : "h:mm aa");
 				SimpleDateFormat sdf = new SimpleDateFormat(fmt_style);
-				ntitle += " since "+sdf.format( new Date( (long)oldts*1000 ) );
+				ntitle += " "+gtx(R.string.since)+" "+sdf.format( new Date( (long)oldts*1000 ) );
 			}
 			
 			/* create new notify with updated icon: icons are sorted integers :-) */
@@ -147,6 +149,10 @@ public class BlinkenlightsBatteryService extends Service {
 			notify_manager.notify(0, this_notify);
 		}
 	};
+	
+	private final String gtx(int resid) {
+		return ""+getResources().getText(resid);
+	}
 	
 	private final void tryWrite(String storage_name, int value) {
 		try {

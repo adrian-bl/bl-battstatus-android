@@ -7,7 +7,7 @@
 <TextView  
     android:layout_width="fill_parent" 
     android:layout_height="wrap_content" 
-    android:text="Ooops! Failed to start service, this should not happen :-("
+    android:text="@string/oops"
     />
 	
 
