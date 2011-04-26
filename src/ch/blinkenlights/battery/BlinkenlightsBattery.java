@@ -46,7 +46,7 @@ public class BlinkenlightsBattery extends Activity
 			setContentView(R.layout.main);
 			((Button) findViewById(R.id.hide)).setOnClickListener(cb_hideMview);
 			((Button) findViewById(R.id.kill)).setOnClickListener(cb_harakiri);
-			((Button) findViewById(R.id.debug)).setOnClickListener(cb_debug);
+			//((Button) findViewById(R.id.debug)).setOnClickListener(cb_debug);
 		}
 	}
 	
