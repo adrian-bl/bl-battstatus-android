@@ -158,7 +158,7 @@ public class BlinkenlightsBatteryService extends Service {
 	};
 	
 	private final String gtx(int resid) {
-		return ""+getResources().getText(resid);
+		return (String) getResources().getText(resid);
 	}
 	
 	private final void tryWrite(String storage_name, int value) {
