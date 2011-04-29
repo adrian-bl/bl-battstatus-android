@@ -110,6 +110,11 @@ public class BlinkenlightsBatteryService extends Service {
 				}
 			}
 			
+			/* absolute dummy tests for defy and co: */
+			if(prcnt > 100) { prcnt = 100; }
+			if(prcnt < 0)   { prcnt = 0;   }
+			
+			
 			/* percentage is now good in any case: check current status */
 			
 			/* plug changed OR we reached 100 percent */
@@ -141,6 +146,8 @@ public class BlinkenlightsBatteryService extends Service {
 				SimpleDateFormat sdf = new SimpleDateFormat(fmt_style);
 				ntitle += " "+gtx(R.string.since)+" "+sdf.format( new Date( (long)oldts*1000 ) );
 			}
+			
+			Log.d(T,"Showing icon for "+prcnt+"% - using icon "+(first_icn+prcnt)+" and the last would be "+R.drawable.r100);
 			
 			/* create new notify with updated icon: icons are sorted integers :-) */
 			Notification this_notify = new Notification((first_icn+prcnt), null, System.currentTimeMillis());
