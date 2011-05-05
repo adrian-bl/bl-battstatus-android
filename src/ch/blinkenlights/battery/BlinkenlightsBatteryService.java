@@ -45,11 +45,14 @@ public class BlinkenlightsBatteryService extends Service {
 	private final static String motofile      = "/sys/devices/platform/cpcap_battery/power_supply/battery/charge_counter";   // Motorola-Percentage file
 	private boolean motorola_mode             = false;                                                                       // Use motofile if TRUE
 	private final IBinder bb_binder           = new LocalBinder();
-	private final static int first_icn        = R.drawable.r000;                                                             // First icon ID
+	private final static int first_n_icon     = R.drawable.r000;                                                             // First icon ID
+	private final static int first_g_icon     = R.drawable.g000;
 	
 	private NotificationManager notify_manager;
 	private Intent              notify_intent;
 	private PendingIntent       notify_pintent;
+	
+	private ConfigManager bconfig = new ConfigManager();
 	
 	@Override
 	public IBinder onBind(Intent i) {
@@ -94,6 +97,7 @@ public class BlinkenlightsBatteryService extends Service {
 			int voltage   = intent.getIntExtra("voltage",0);
 			int curplug   = ( intent.getIntExtra("plugged",0) == 0 ? 0 : 1 );
 			int prcnt     = level*100/scale;
+			int icon_id   = 0;
 			
 			/* TRY to get old values. -1 if failed */
 			int oldprcnt  = tryRead(FN_PERCENTAGE);
@@ -116,6 +120,15 @@ public class BlinkenlightsBatteryService extends Service {
 			
 			
 			/* percentage is now good in any case: check current status */
+			
+			/* set icon to correct drawable (depends on setting) */
+			if( curplug == 1 && bconfig.GlowIsEnabled() == true ) {
+				icon_id += first_g_icon + prcnt;
+			}
+			else {
+				icon_id = first_n_icon + prcnt;
+			}
+			
 			
 			/* plug changed OR we reached 100 percent */
 			if( (curplug != oldplug) || (prcnt == 100) ) {
@@ -147,10 +160,10 @@ public class BlinkenlightsBatteryService extends Service {
 				ntitle += " "+gtx(R.string.since)+" "+sdf.format( new Date( (long)oldts*1000 ) );
 			}
 			
-			Log.d(T,"Showing icon for "+prcnt+"% - using icon "+(first_icn+prcnt)+" and the last would be "+R.drawable.r100);
+			Log.d(T,"Showing icon for "+prcnt+"% - using icon "+icon_id+" and the last would be "+R.drawable.r100);
 			
 			/* create new notify with updated icon: icons are sorted integers :-) */
-			Notification this_notify = new Notification((first_icn+prcnt), null, System.currentTimeMillis());
+			Notification this_notify = new Notification(icon_id, null, System.currentTimeMillis());
 			this_notify.flags |= Notification.FLAG_ONGOING_EVENT | Notification.FLAG_NO_CLEAR;
 			this_notify.setLatestEventInfo(ctx, ntitle, ntext, notify_pintent);
 			notify_manager.notify(0, this_notify);
