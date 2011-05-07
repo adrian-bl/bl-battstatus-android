@@ -31,7 +31,7 @@ public class ConfigUtil {
 	private final static String motofile      = "/sys/devices/platform/cpcap_battery/power_supply/battery/charge_counter";   // Motorola-Percentage file
 	private Context             pCTX;
 	
-	public void INIT_CONTEXT(Context what) {
+	public ConfigUtil(Context what) {
 		pCTX = what;
 	}
 	

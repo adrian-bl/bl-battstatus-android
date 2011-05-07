@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <resources>
     <string name="app_name">Battery Circle</string>
+    <string name="about">Informationen</string>
     <string name="startup">\'Battery Circle\' zeigt nun den aktuellen Batteriestand in der Statusleiste an. Die Applikation wird sich beim nächsten Reboot selbständig starten.</string>
     <string name="oops">Uuups! Hintergrunddienst konnte nicht gestartet werden - dies sollte nicht passieren :-(</string>
     <string name="kill">Applikation stoppen</string>
-    <string name="return_home">Okay</string>
     <string name="charging_from">Lade von</string>
     <string name="discharging_from">Entlädt von</string>
     <string name="fully_charged">Vollständig geladen</string>

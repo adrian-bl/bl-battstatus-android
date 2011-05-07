@@ -53,8 +53,7 @@ public class BlinkenlightsBatteryService extends Service {
 	@Override
 	public void onCreate() {
 		
-		bconfig = new ConfigUtil();
-		bconfig.INIT_CONTEXT(getApplicationContext());
+		bconfig = new ConfigUtil(getApplicationContext());
 		
 		/* create notification manager stuff and register ourself as a service */
 		notify_manager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
