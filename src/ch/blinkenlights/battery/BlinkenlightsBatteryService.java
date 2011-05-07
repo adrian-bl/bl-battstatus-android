@@ -24,26 +24,12 @@ import android.util.Log;
 import android.content.Intent;
 import android.text.format.DateFormat;
 
-import java.io.FileOutputStream;
-import java.io.FileInputStream;
-import java.io.DataInputStream;
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.File;
-import java.io.InputStream;
 import java.util.Date;
 import java.text.SimpleDateFormat;
 
 public class BlinkenlightsBatteryService extends Service {
 	
 	private final static String T             = "BlinkenlightsBatteryService.class: ";                                       // Log Token
-	private final static String FN_PERCENTAGE = "blb-percentage";                                                            // File to store percentage
-	private final static String FN_PLUGGED    = "blb-plugstatus";                                                            // File to store plugstatus
-	private final static String FN_TIMESTAMP  = "blb-ts";                                                                    // Latest event timestamp
-	private final static String motofile      = "/sys/devices/platform/cpcap_battery/power_supply/battery/charge_counter";   // Motorola-Percentage file
-	private boolean motorola_mode             = false;                                                                       // Use motofile if TRUE
 	private final IBinder bb_binder           = new LocalBinder();
 	private final static int first_n_icon     = R.drawable.r000;                                                             // First icon ID
 	private final static int first_g_icon     = R.drawable.g000;
@@ -51,8 +37,7 @@ public class BlinkenlightsBatteryService extends Service {
 	private NotificationManager notify_manager;
 	private Intent              notify_intent;
 	private PendingIntent       notify_pintent;
-	
-	private ConfigManager bconfig = new ConfigManager();
+	private ConfigUtil          bconfig;
 	
 	@Override
 	public IBinder onBind(Intent i) {
@@ -68,10 +53,8 @@ public class BlinkenlightsBatteryService extends Service {
 	@Override
 	public void onCreate() {
 		
-		/* check if we are running on motorola hardware */
-		if((new File(motofile)).exists()) {
-			motorola_mode = true;
-		}
+		bconfig = new ConfigUtil();
+		bconfig.INIT_CONTEXT(getApplicationContext());
 		
 		/* create notification manager stuff and register ourself as a service */
 		notify_manager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
@@ -100,18 +83,14 @@ public class BlinkenlightsBatteryService extends Service {
 			int icon_id   = 0;
 			
 			/* TRY to get old values. -1 if failed */
-			int oldprcnt  = tryRead(FN_PERCENTAGE);
-			int oldplug   = tryRead(FN_PLUGGED);
-			int oldts     = tryRead(FN_TIMESTAMP);
+			int oldprcnt  = bconfig.GetPercentage();
+			int oldplug   = bconfig.GetPlugStatus();
+			int oldts     = bconfig.GetTimestamp();
 			
 			/* defy (and other stupid-as-heck motorola phones return the capacity in 10% steps.
 			   ..but sysfs knows the real 1%-res value */
-			   //FIXME: How 'heavy' is new File... ? we could do this check at startup and set a bool
-			if(motorola_mode) {
-				int xresult = pathToInt(motofile);
-				if(xresult >= 0) { // would return -1 if read failed (shouldn't happen)
-					prcnt = xresult;
-				}
+			if(bconfig.IsMotorola()) {
+				prcnt = bconfig.GetMotorolaPercent();
 			}
 			
 			/* absolute dummy tests for defy and co: */
@@ -137,9 +116,9 @@ public class BlinkenlightsBatteryService extends Service {
 				oldprcnt = prcnt;
 				oldts    = unixtimeAsInt();
 				
-				tryWrite(FN_PLUGGED, curplug);
-				tryWrite(FN_PERCENTAGE, prcnt);
-				tryWrite(FN_TIMESTAMP, oldts);
+				bconfig.SetPlugStatus(curplug);
+				bconfig.SetPercentage(prcnt);
+				bconfig.SetTimestamp(oldts);
 			}
 			
 			// prepare interface texts
@@ -172,38 +151,6 @@ public class BlinkenlightsBatteryService extends Service {
 	
 	private final String gtx(int resid) {
 		return (String) getResources().getText(resid);
-	}
-	
-	private final void tryWrite(String storage_name, int value) {
-		try {
-			String outdata = value+"\n";
-			FileOutputStream fos = openFileOutput(storage_name, Context.MODE_PRIVATE);
-			BufferedOutputStream bos = new BufferedOutputStream(fos);
-			bos.write(outdata.getBytes());
-			bos.close();
-			fos.close();
-		} catch(Exception e) { Log.v(T, "tryWrite: "+e); }
-	}
-	
-	private final int tryRead(String storage_name) {
-		return pathToInt(getFilesDir()+"/"+storage_name);
-	}
-	
-	private final int pathToInt(String absolute_path) {
-		int result = -1;
-		
-		try {
-			String foo;
-			FileInputStream fis     = new FileInputStream(absolute_path);
-			BufferedInputStream bis = new BufferedInputStream(fis);
-			DataInputStream     dis = new DataInputStream(bis);
-			foo   = dis.readLine();
-			dis.close();
-			bis.close();
-			fis.close();
-			result = Integer.valueOf(foo).intValue();
-		} catch(Exception e) { Log.v(T,"pathToInit: "+e); }
-		return result;
 	}
 	
 	private final int unixtimeAsInt() {
