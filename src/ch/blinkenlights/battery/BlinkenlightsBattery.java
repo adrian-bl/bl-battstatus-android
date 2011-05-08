@@ -83,6 +83,9 @@ public class BlinkenlightsBattery extends Activity
 			case R.id.mact_about:
 				showAbout();
 				return true;
+			case R.id.mact_settings:
+				setContentView(R.layout.oops);
+				return true;
 			default:
 				return super.onOptionsItemSelected(item);
 		}
