@@ -6,6 +6,9 @@
   android:layout_height="fill_parent"
 >
 
+<ViewFlipper android:id="@+id/flipper" android:layout_width="wrap_content" android:layout_height="wrap_content">
+
+<RelativeLayout android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="fill_parent">
 	<ImageView android:id="@+id/hintarrow"
 		android:layout_width="wrap_content" android:layout_height="wrap_content"
 		android:paddingLeft="12dip" android:paddingTop="4dip"
@@ -51,36 +54,22 @@
 		android:text="@string/startup"
 	>
 	</TextView>
-	
-<!--
-	<Button android:id="@+id/hide"
-		android:layout_width="wrap_content"
-		android:layout_height="wrap_content"
-		android:text="@string/return_home"
-		android:layout_marginTop="32dip"
-		android:layout_below="@+id/helptxt"
-		android:layout_centerHorizontal="true"
-	>
-	</Button>
+</RelativeLayout>
 
-	<Button android:id="@+id/kill"
-		android:layout_width="wrap_content"
-		android:layout_height="wrap_content"
-		android:text="@string/kill"
-		android:layout_marginTop="12dip"
-		android:layout_centerHorizontal="true"
-		android:layout_below="@+id/hide"
-	>
-	</Button>
 
-	<Button android:id="@+id/debug"
-		android:layout_width="wrap_content"
-		android:layout_height="wrap_content"
-		android:text="Debug"
-		android:layout_marginTop="12dip"
-		android:layout_centerHorizontal="true"
-		android:layout_below="@+id/kill"
-	>
-	</Button>
--->
+<RelativeLayout android:orientation="vertical" android:id="@+id/preferences"
+    android:layout_width="fill_parent" android:layout_height="fill_parent">
+
+		<ImageView android:id="@+id/csss1"
+		android:layout_width="wrap_content" android:layout_height="wrap_content"
+		android:paddingLeft="2dip" android:paddingTop="14dip"
+		android:layout_toRightOf="@+id/hintarrow"
+		android:src="@drawable/r100"
+	/>
+
+
+</RelativeLayout>
+
+</ViewFlipper>
+
 </RelativeLayout>

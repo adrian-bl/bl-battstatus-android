@@ -18,11 +18,13 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ViewFlipper;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MenuInflater;
 import android.view.View.OnClickListener;
+import android.view.KeyEvent;
 import android.content.ComponentName;
 
 public class BlinkenlightsBattery extends Activity
@@ -30,6 +32,7 @@ public class BlinkenlightsBattery extends Activity
 	private Intent bb_service_intent;
 	private final BBServiceConnection bb_service_connection = new BBServiceConnection();
 	private final static String T = "BlinkenlightsBattery";
+	private ViewFlipper vflipper;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -49,6 +52,7 @@ public class BlinkenlightsBattery extends Activity
 			/* service started up: bind to it and display default dialog */
 			bindService(bb_service_intent, bb_service_connection, 0);
 			setContentView(R.layout.main);
+			vflipper = (ViewFlipper) findViewById(R.id.flipper);
 		}
 	}
 	
@@ -64,6 +68,17 @@ public class BlinkenlightsBattery extends Activity
 		super.onStop();
 		finish(); // kill this activity if not visible anymore (no need to keep multiple instances open)
 	}
+	
+	@Override
+	public boolean onKeyDown(int keycode, KeyEvent event) {
+		if (keycode == KeyEvent.KEYCODE_BACK && vflipper != null) {
+			if(vflipper.getDisplayedChild() != 0){
+				vflipper.showPrevious();
+				return true;
+			}
+		}
+		return super.onKeyDown(keycode, event);
+}
 	
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
@@ -84,7 +99,7 @@ public class BlinkenlightsBattery extends Activity
 				showAbout();
 				return true;
 			case R.id.mact_settings:
-				setContentView(R.layout.oops);
+				vflipper.showNext();
 				return true;
 			default:
 				return super.onOptionsItemSelected(item);
