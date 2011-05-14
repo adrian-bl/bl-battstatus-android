@@ -18,6 +18,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.CheckBox;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -84,11 +85,18 @@ public class BlinkenlightsBattery extends Activity
 				showAbout();
 				return true;
 			case R.id.mact_settings:
-				setContentView(R.layout.oops);
+				setContentView(R.layout.config);
+				initConfigDialog();
 				return true;
 			default:
 				return super.onOptionsItemSelected(item);
 		}
+	}
+	
+	public void initConfigDialog() {
+		ConfigUtil cx = new ConfigUtil(getApplicationContext());
+		((CheckBox) findViewById(R.id.cb_config_glow)).setChecked(cx.GlowIsEnabled());
+		((CheckBox) findViewById(R.id.cb_config_details)).setChecked(cx.ShowDetails());
 	}
 	
 	

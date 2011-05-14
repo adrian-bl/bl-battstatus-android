@@ -28,6 +28,10 @@ public class ConfigUtil {
 	private final static String FN_PERCENTAGE = "blb-percentage"; // File to store percentage
 	private final static String FN_PLUGGED    = "blb-plugstatus"; // File to store plugstatus
 	private final static String FN_TIMESTAMP  = "blb-ts";         // Latest event timestamp
+	
+	private final static String FN_C_GLOW     = "c_glow";
+	private final static String FN_C_DETAILS  = "c_show_details";
+	
 	private final static String motofile      = "/sys/devices/platform/cpcap_battery/power_supply/battery/charge_counter";   // Motorola-Percentage file
 	private Context             pCTX;
 	
@@ -36,7 +40,19 @@ public class ConfigUtil {
 	}
 	
 	public boolean GlowIsEnabled() {
-		return true;
+		return (ConfOptionIsSet(FN_C_GLOW));
+	}
+	
+	public void SetGlowIsEnabled(boolean state) {
+		ConfigToggle(FN_C_GLOW, state);
+	}
+	
+	public boolean ShowDetails() {
+		return (ConfOptionIsSet(FN_C_DETAILS));
+	}
+
+	public void SetShowDetails(boolean state) {
+		ConfigToggle(FN_C_DETAILS, state);
 	}
 	
 	public boolean IsMotorola() {
@@ -107,6 +123,19 @@ public class ConfigUtil {
 			result = Integer.valueOf(foo).intValue();
 		} catch(Exception e) { Log.v(T,"pathToInit: "+e); }
 		return result;
+	}
+	
+	private boolean ConfOptionIsSet(String fid) {
+		return (new File(pCTX.getFilesDir()+"/"+fid)).exists();
+	}
+	
+	private void ConfigToggle(String fid, boolean state) {
+		if(state == true) {
+			tryWrite(fid, 0);
+		}
+		else {
+			(new File(pCTX.getFilesDir()+"/"+fid)).delete();
+		}
 	}
 	
 }

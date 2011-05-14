@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    >
+ 
+<TableLayout android:id="@+id/TableLayout01" android:layout_width="fill_parent" android:layout_height="wrap_content"  android:stretchColumns="0">
+
+	<TableRow android:layout_width="wrap_content" android:layout_height="wrap_content">
+		<TextView android:layout_width="fill_parent" android:text="Glow bim lade"></TextView>
+		<CheckBox android:id="@+id/cb_config_glow"   android:layout_height="wrap_content"></CheckBox>
+	</TableRow>
+	
+	<TableRow android:layout_width="wrap_content" android:layout_height="wrap_content">
+		<TextView android:layout_width="fill_parent" android:text="Meh zueg azeige"></TextView>
+		<CheckBox android:id="@+id/cb_config_details"   android:layout_height="wrap_content"></CheckBox>
+	</TableRow>
+	
+ 
+</TableLayout>
+</LinearLayout>
