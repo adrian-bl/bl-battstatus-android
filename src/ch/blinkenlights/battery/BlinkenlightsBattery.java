@@ -25,12 +25,15 @@ import android.view.MenuItem;
 import android.view.MenuInflater;
 import android.view.View.OnClickListener;
 import android.content.ComponentName;
+import android.widget.CompoundButton;
+import android.widget.CompoundButton.OnCheckedChangeListener;
 
 public class BlinkenlightsBattery extends Activity
 {
 	private Intent bb_service_intent;
 	private final BBServiceConnection bb_service_connection = new BBServiceConnection();
 	private final static String T = "BlinkenlightsBattery";
+	private ConfigUtil bconfig;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -39,7 +42,8 @@ public class BlinkenlightsBattery extends Activity
 		super.onCreate(savedInstanceState);
 		
 		bb_service_intent = new Intent(getApplicationContext(), BlinkenlightsBatteryService.class);
-		ss_ok = startService(bb_service_intent);
+		ss_ok             = startService(bb_service_intent);
+		bconfig           = new ConfigUtil(getApplicationContext());
 		
 		if(ss_ok == null) {
 			Log.e(T, "Ouch! Could not start service!");
@@ -94,9 +98,28 @@ public class BlinkenlightsBattery extends Activity
 	}
 	
 	public void initConfigDialog() {
-		ConfigUtil cx = new ConfigUtil(getApplicationContext());
-		((CheckBox) findViewById(R.id.cb_config_glow)).setChecked(cx.GlowIsEnabled());
-		((CheckBox) findViewById(R.id.cb_config_details)).setChecked(cx.ShowDetails());
+		CheckBox glow    = (CheckBox)findViewById(R.id.cb_config_glow);
+		CheckBox details = (CheckBox)findViewById(R.id.cb_config_details);
+		
+		/* set checkboxes from config */
+		glow.setChecked(bconfig.GlowIsEnabled());
+		details.setChecked(bconfig.ShowDetails());
+		
+		/* add callbacks */
+		glow.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+				public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+					bconfig.SetGlowIsEnabled(isChecked);
+					bb_service_connection.bbsvc.updateStatus();
+				}
+		});
+		
+		details.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+				public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+					bconfig.SetShowDetails(isChecked);
+					bb_service_connection.bbsvc.updateStatus();
+				}
+		});
+		
 	}
 	
 	

@@ -165,4 +165,9 @@ public class BlinkenlightsBatteryService extends Service {
 	public void debug() {
 		Log.v(T, "+++ dumping status ++++");
 	}
+	
+	public void updateStatus() {
+		Log.v(T, "Config change - should update icon!");
+	}
+	
 }
