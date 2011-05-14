@@ -34,6 +34,8 @@ public class BlinkenlightsBatteryService extends Service {
 	private final static int first_n_icon     = R.drawable.r000;                                                             // First icon ID
 	private final static int first_g_icon     = R.drawable.g000;
 	
+	private int[] battery_state = new int[4];
+	
 	private NotificationManager notify_manager;
 	private Intent              notify_intent;
 	private PendingIntent       notify_pintent;
@@ -61,7 +63,7 @@ public class BlinkenlightsBatteryService extends Service {
 		notify_pintent = PendingIntent.getActivity(this, 0, notify_intent, 0);
 		
 		registerReceiver(bb_bcreceiver, new IntentFilter(Intent.ACTION_BATTERY_CHANGED));
-		Log.v(T,"+++++ onCreate() finished - broadcaster registered +++++");
+		Log.d(T,"+++++ onCreate() finished - broadcaster registered +++++");
 	}
 	
 	public void onDestory() {
@@ -72,81 +74,92 @@ public class BlinkenlightsBatteryService extends Service {
 	private final BroadcastReceiver bb_bcreceiver = new BroadcastReceiver() {
 		@Override
 		public void onReceive(Context context, Intent intent) {
-			Context ctx   = getApplicationContext();
-			int level     = intent.getIntExtra("level", 0);
-			int scale     = intent.getIntExtra("scale", 100);
-			int temp      = intent.getIntExtra("temperature", 0);
-			int voltage   = intent.getIntExtra("voltage",0);
-			int curplug   = ( intent.getIntExtra("plugged",0) == 0 ? 0 : 1 );
-			int prcnt     = level*100/scale;
-			int icon_id   = 0;
+			int level        = intent.getIntExtra("level", 0);
+			int scale        = intent.getIntExtra("scale", 100);
 			
-			/* TRY to get old values. -1 if failed */
-			int oldprcnt  = bconfig.GetPercentage();
-			int oldplug   = bconfig.GetPlugStatus();
-			int oldts     = bconfig.GetTimestamp();
+			battery_state[0] = level*100/scale;                                    /* capacity percent */
+			battery_state[1] = ( intent.getIntExtra("plugged",0) == 0 ? 0 : 1 );   /* plug status      */
+			battery_state[2] = intent.getIntExtra("voltage",0);                    /* voltage          */
+			battery_state[3] = intent.getIntExtra("temperature", 0);               /* temperature      */
 			
-			/* defy (and other stupid-as-heck motorola phones return the capacity in 10% steps.
-			   ..but sysfs knows the real 1%-res value */
-			if(bconfig.IsMotorola()) {
-				prcnt = bconfig.GetMotorolaPercent();
-			}
-			
-			/* absolute dummy tests for defy and co: */
-			if(prcnt > 100) { prcnt = 100; }
-			if(prcnt < 0)   { prcnt = 0;   }
-			
-			
-			/* percentage is now good in any case: check current status */
-			
-			/* set icon to correct drawable (depends on setting) */
-			if( curplug == 1 && bconfig.GlowIsEnabled() == true ) {
-				icon_id += first_g_icon + prcnt;
-			}
-			else {
-				icon_id = first_n_icon + prcnt;
-			}
-			
-			
-			/* plug changed OR we reached 100 percent */
-			if( (curplug != oldplug) || (prcnt == 100) ) {
-				Log.d(T, "++ STATUS CHANGE ++: oldplug="+oldplug+", curplug="+curplug+", percentage="+prcnt);
-				
-				oldprcnt = prcnt;
-				oldts    = unixtimeAsInt();
-				
-				bconfig.SetPlugStatus(curplug);
-				bconfig.SetPercentage(prcnt);
-				bconfig.SetTimestamp(oldts);
-			}
-			
-			// prepare interface texts
-			String vx     = String.valueOf(voltage/1000.0);
-			String ntext  = (voltage == 0 ? "" : gtx(R.string.voltage)+" "+vx+" V // ");
-			       ntext += gtx(R.string.capacity_at)+" "+prcnt+"% "+gtx(R.string.since)+":";
-			String ntitle = ((prcnt == 100 && curplug == 1) ? gtx(R.string.fully_charged) : 
-			                 (curplug == 0 ? gtx(R.string.discharging_from)+" "+oldprcnt+"%" : 
-			                 gtx(R.string.charging_from)+" "+oldprcnt+"%"));
-			int timediff  = unixtimeAsInt() - oldts;
-			
-			if(timediff > 60*60*2) {
-				ntitle += " "+gtx(R.string.since)+" "+(int)(timediff/60/60)+" "+gtx(R.string.hours);
-			}
-			else {
-				String fmt_style     = (DateFormat.is24HourFormat(ctx) ? "HH:mm" : "h:mm aa");
-				SimpleDateFormat sdf = new SimpleDateFormat(fmt_style);
-				ntitle += " "+gtx(R.string.since)+" "+sdf.format( new Date( (long)oldts*1000 ) );
-			}
-			
-			Log.d(T,"Showing icon for "+prcnt+"% - using icon "+icon_id+" and the last would be "+R.drawable.r100);
-			
-			/* create new notify with updated icon: icons are sorted integers :-) */
-			Notification this_notify = new Notification(icon_id, null, System.currentTimeMillis());
-			this_notify.flags |= Notification.FLAG_ONGOING_EVENT | Notification.FLAG_NO_CLEAR;
-			this_notify.setLatestEventInfo(ctx, ntitle, ntext, notify_pintent);
-			notify_manager.notify(0, this_notify);
+			/* trigger update with new values */
+			updateNotifyIcon();
+		}};
+		
+	
+	public void updateNotifyIcon() {
+		Context ctx   = getApplicationContext();
+		int icon_id   = 0;
+		int prcnt     = battery_state[0];
+		int curplug   = battery_state[1];
+		int voltage   = battery_state[2];
+		int temp      = battery_state[3];
+		
+		/* TRY to get old values. -1 if failed */
+		int oldprcnt  = bconfig.GetPercentage();
+		int oldplug   = bconfig.GetPlugStatus();
+		int oldts     = bconfig.GetTimestamp();
+		
+		/* defy (and other stupid-as-heck motorola phones return the capacity in 10% steps.
+		   ..but sysfs knows the real 1%-res value */
+		if(bconfig.IsMotorola()) {
+			prcnt = bconfig.GetMotorolaPercent();
 		}
-	};
+		
+		/* absolute dummy tests for defy and co: */
+		if(prcnt > 100) { prcnt = 100; }
+		if(prcnt < 0)   { prcnt = 0;   }
+		
+		
+		/* percentage is now good in any case: check current status */
+		
+		/* set icon to correct drawable (depends on setting) */
+		if( curplug == 1 && bconfig.GlowIsEnabled() == true ) {
+			icon_id += first_g_icon + prcnt;
+		}
+		else {
+			icon_id = first_n_icon + prcnt;
+		}
+		
+		
+		/* plug changed OR we reached 100 percent */
+		if( (curplug != oldplug) || (prcnt == 100) ) {
+			Log.d(T, "++ STATUS CHANGE ++: oldplug="+oldplug+", curplug="+curplug+", percentage="+prcnt);
+			
+			oldprcnt = prcnt;
+			oldts    = unixtimeAsInt();
+			
+			bconfig.SetPlugStatus(curplug);
+			bconfig.SetPercentage(prcnt);
+			bconfig.SetTimestamp(oldts);
+		}
+		
+		// prepare interface texts
+		String vx     = String.valueOf(voltage/1000.0);
+		String ntext  = (voltage == 0 ? "" : gtx(R.string.voltage)+" "+vx+" V // ");
+		       ntext += gtx(R.string.capacity_at)+" "+prcnt+"% "+gtx(R.string.since)+":";
+		String ntitle = ((prcnt == 100 && curplug == 1) ? gtx(R.string.fully_charged) : 
+		                 (curplug == 0 ? gtx(R.string.discharging_from)+" "+oldprcnt+"%" : 
+		                 gtx(R.string.charging_from)+" "+oldprcnt+"%"));
+		int timediff  = unixtimeAsInt() - oldts;
+		
+		if(timediff > 60*60*2) {
+			ntitle += " "+gtx(R.string.since)+" "+(int)(timediff/60/60)+" "+gtx(R.string.hours);
+		}
+		else {
+			String fmt_style     = (DateFormat.is24HourFormat(ctx) ? "HH:mm" : "h:mm aa");
+			SimpleDateFormat sdf = new SimpleDateFormat(fmt_style);
+			ntitle += " "+gtx(R.string.since)+" "+sdf.format( new Date( (long)oldts*1000 ) );
+		}
+		
+		Log.d(T,"Showing icon for "+prcnt+"% - using icon "+icon_id+" and the last would be "+R.drawable.r100);
+		
+		/* create new notify with updated icon: icons are sorted integers :-) */
+		Notification this_notify = new Notification(icon_id, null, System.currentTimeMillis());
+		this_notify.flags |= Notification.FLAG_ONGOING_EVENT | Notification.FLAG_NO_CLEAR;
+		this_notify.setLatestEventInfo(ctx, ntitle, ntext, notify_pintent);
+		notify_manager.notify(0, this_notify);
+	}
 	
 	private final String gtx(int resid) {
 		return (String) getResources().getText(resid);
@@ -157,17 +170,13 @@ public class BlinkenlightsBatteryService extends Service {
 	}
 	
 	public void harakiri() {
-		Log.v(T, "terminating myself - unregistering receiver");
+		Log.d(T, "terminating myself - unregistering receiver");
 		unregisterReceiver(bb_bcreceiver);
 		notify_manager.cancelAll();
 	}
 	
 	public void debug() {
-		Log.v(T, "+++ dumping status ++++");
-	}
-	
-	public void updateStatus() {
-		Log.v(T, "Config change - should update icon!");
+		Log.d(T, "+++ dumping status ++++");
 	}
 	
 }
