@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <resources>
+
     <string name="app_name">Battery Circle</string>
-    <string name="about">Informationen</string>
-    <string name="startup">\'Battery Circle\' zeigt nun den aktuellen Batteriestand in der Statusleiste an. Die Applikation wird sich beim nächsten Reboot selbständig starten.</string>
+    <string name="about">Infos</string>
+    <string name="settings">Einstellungen</string>
+    <string name="startup">\'Battery Circle\' zeigt nun den aktuellen Batteriestand in der Statusleiste an. Die Applikation wird sich beim nächsten Boot selbständig starten.</string>
     <string name="oops">Uuups! Hintergrunddienst konnte nicht gestartet werden - dies sollte nicht passieren :-(</string>
-    <string name="kill">Applikation stoppen</string>
+    <string name="kill">Beenden</string>
     <string name="charging_from">Lade von</string>
     <string name="discharging_from">Entlädt von</string>
     <string name="fully_charged">Vollständig geladen</string>
@@ -12,5 +14,8 @@
     <string name="hours">Stunden</string>
     <string name="capacity_at">Akkustand:</string>
     <string name="voltage">Spannung</string>
+    <string name="degree">°C</string>
+    <string name="c_glow">Beim laden \'glühen\'</string>
+    <string name="c_details">Spannung und Temperatur anzeigen</string>
 
 </resources>

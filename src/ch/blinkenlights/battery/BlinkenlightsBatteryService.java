@@ -136,12 +136,23 @@ public class BlinkenlightsBatteryService extends Service {
 		
 		// prepare interface texts
 		String vx     = String.valueOf(voltage/1000.0);
-		String ntext  = (voltage == 0 ? "" : gtx(R.string.voltage)+" "+vx+" V // ");
-		       ntext += gtx(R.string.capacity_at)+" "+prcnt+"% "+gtx(R.string.since)+":";
 		String ntitle = ((prcnt == 100 && curplug == 1) ? gtx(R.string.fully_charged) : 
 		                 (curplug == 0 ? gtx(R.string.discharging_from)+" "+oldprcnt+"%" : 
 		                 gtx(R.string.charging_from)+" "+oldprcnt+"%"));
 		int timediff  = unixtimeAsInt() - oldts;
+		
+		
+		// set details text
+		String ntext  = "";
+		if(bconfig.ShowDetails()) {
+			ntext += vx+" V, "+temp+gtx(R.string.degree)+", "+prcnt+"% "+gtx(R.string.since)+":";
+		}
+		else {
+			ntext += (voltage == 0 ? "" : gtx(R.string.voltage)+" "+vx+" V // ");
+			ntext += gtx(R.string.capacity_at)+" "+prcnt+"% "+gtx(R.string.since)+":";
+		}
+		// end details text
+		
 		
 		if(timediff > 60*60*2) {
 			ntitle += " "+gtx(R.string.since)+" "+(int)(timediff/60/60)+" "+gtx(R.string.hours);

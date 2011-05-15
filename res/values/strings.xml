@@ -1,8 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="ISO-8859-1"?>
 <resources>
     <string name="app_vers">1.2</string>
     <string name="app_name">Battery Circle</string>
     <string name="about">About</string>
+    <string name="settings">Configure</string>
     <string name="startup">\'Battery Circle\' is now running and will startup by itself on next boot.</string>
     <string name="oops">Ooops! Failed to start service, this should not happen :-(</string>
     <string name="kill">Close</string>
@@ -13,5 +14,8 @@
     <string name="hours">hours</string>
     <string name="capacity_at">capacity at</string>
     <string name="voltage">voltage</string>
+    <string name="degree">°C</string>
+    <string name="c_glow">\'Glow\' while charging</string>
+    <string name="c_details">Display voltage and temperature</string>
 
 </resources>
