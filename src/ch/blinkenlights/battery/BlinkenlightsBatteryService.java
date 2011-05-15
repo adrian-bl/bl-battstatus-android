@@ -145,7 +145,8 @@ public class BlinkenlightsBatteryService extends Service {
 		// set details text
 		String ntext  = "";
 		if(bconfig.ShowDetails()) {
-			ntext += vx+" V, "+temp+gtx(R.string.degree)+", "+prcnt+"% "+gtx(R.string.since)+":";
+			String dgtmp = String.valueOf(temp/10.0);
+			ntext += vx+"V, "+dgtmp+gtx(R.string.degree)+", "+gtx(R.string.capacity_at)+" "+prcnt+"% "+gtx(R.string.since)+":";
 		}
 		else {
 			ntext += (voltage == 0 ? "" : gtx(R.string.voltage)+" "+vx+" V // ");

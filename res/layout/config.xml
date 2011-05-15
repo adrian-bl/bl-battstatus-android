@@ -11,7 +11,7 @@
 	
 	<ImageView android:layout_width="wrap_content" android:layout_height="wrap_content"
 		android:paddingTop="10dip"
-		android:src="@drawable/r019"
+		android:src="@drawable/r023"
 	/>
 	<ImageView android:layout_width="wrap_content" android:layout_height="wrap_content"
 		android:paddingTop="14dip" android:paddingRight="5dip" android:paddingLeft="5dip"
@@ -19,7 +19,7 @@
 	/>
 	<ImageView android:layout_width="wrap_content" android:layout_height="wrap_content"
 		android:paddingTop="10dip" android:paddingRight="20dip"
-		android:src="@drawable/g019"
+		android:src="@drawable/g023"
 	/>
 		<CheckBox android:id="@+id/cb_config_glow"   android:layout_height="wrap_content"></CheckBox>
 	</TableRow>
