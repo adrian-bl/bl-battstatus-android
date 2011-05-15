@@ -5,7 +5,7 @@ use Image::Magick;
 my @colors = qw(f02c34 bb382c a1542c a16e2c a1872c 9da12c 81a12c 6ca12c 5aa12c 2da12c 2c91a1);
 
 my $conf = {
-	H => { fsize=>16, fsize_100=>16, font=>"DroidSans-Bold.ttf", size=>38, stroke=>6 , points=>"18,18 15,15", o=>-1, o_10=>-1},
+	H => { fsize=>18, fsize_100=>18, font=>"DroidSans-Bold.ttf", size=>38, stroke=>6 , points=>"18,18 15,15", o=>-1, o_10=>-1},
 	L => { fsize=>13, fsize_100=>11,  font=>"DroidSans.ttf", size=>25, stroke=>4 , points=>"12,12 9,9", o=>0, o_10=>-1},
 };
 
