@@ -29,7 +29,6 @@ public class ConfigUtil {
 	private final static String FN_PLUGGED    = "blb-plugstatus"; // File to store plugstatus
 	private final static String FN_TIMESTAMP  = "blb-ts";         // Latest event timestamp
 	
-	private final static String FN_C_GLOW     = "c_glow";
 	private final static String FN_C_DETAILS  = "c_show_details";
 	
 	private final static String motofile      = "/sys/devices/platform/cpcap_battery/power_supply/battery/charge_counter";   // Motorola-Percentage file
@@ -37,14 +36,6 @@ public class ConfigUtil {
 	
 	public ConfigUtil(Context what) {
 		pCTX = what;
-	}
-	
-	public boolean GlowIsEnabled() {
-		return (ConfOptionIsSet(FN_C_GLOW));
-	}
-	
-	public void SetGlowIsEnabled(boolean state) {
-		ConfigToggle(FN_C_GLOW, state);
 	}
 	
 	public boolean ShowDetails() {
@@ -69,6 +60,18 @@ public class ConfigUtil {
 	
 	public void SetPlugStatus(int what) {
 		tryWrite(FN_PLUGGED,what);
+	}
+	
+	public int GetIconFor(int prcnt) {
+		int setting = 0;
+		switch(setting) {
+			case 1:
+				return (R.drawable.fb_000 + prcnt);
+			case 2:
+				return (R.drawable.cr_f_000 + prcnt);
+			default:
+				return (R.drawable.fb_cr_h_000 + prcnt);
+		}
 	}
 	
 	
