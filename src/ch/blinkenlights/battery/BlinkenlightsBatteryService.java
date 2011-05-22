@@ -31,9 +31,6 @@ public class BlinkenlightsBatteryService extends Service {
 	
 	private final static String T             = "BlinkenlightsBatteryService.class: ";                                       // Log Token
 	private final IBinder bb_binder           = new LocalBinder();
-	private final static int first_n_icon     = R.drawable.r000;                                                             // First icon ID
-	private final static int first_g_icon     = R.drawable.g000;
-	
 	private int[] battery_state = new int[4];
 	
 	private NotificationManager notify_manager;
@@ -89,7 +86,6 @@ public class BlinkenlightsBatteryService extends Service {
 	
 	public void updateNotifyIcon() {
 		Context ctx   = getApplicationContext();
-		int icon_id   = 0;
 		int prcnt     = battery_state[0];
 		int curplug   = battery_state[1];
 		int voltage   = battery_state[2];
@@ -113,15 +109,6 @@ public class BlinkenlightsBatteryService extends Service {
 		
 		/* percentage is now good in any case: check current status */
 		
-		/* set icon to correct drawable (depends on setting) */
-		if( curplug == 1 && bconfig.GlowIsEnabled() == true ) {
-			icon_id += first_g_icon + prcnt;
-		}
-		else {
-			icon_id = first_n_icon + prcnt;
-		}
-		
-		
 		/* plug changed OR we reached 100 percent */
 		if( (curplug != oldplug) || (prcnt == 100) ) {
 			Log.d(T, "++ STATUS CHANGE ++: oldplug="+oldplug+", curplug="+curplug+", percentage="+prcnt);
@@ -140,6 +127,7 @@ public class BlinkenlightsBatteryService extends Service {
 		                 (curplug == 0 ? gtx(R.string.discharging_from)+" "+oldprcnt+"%" : 
 		                 gtx(R.string.charging_from)+" "+oldprcnt+"%"));
 		int timediff  = unixtimeAsInt() - oldts;
+		int icon_id   = bconfig.GetIconFor(prcnt);
 		
 		
 		// set details text
@@ -164,7 +152,7 @@ public class BlinkenlightsBatteryService extends Service {
 			ntitle += " "+gtx(R.string.since)+" "+sdf.format( new Date( (long)oldts*1000 ) );
 		}
 		
-		Log.d(T,"Showing icon for "+prcnt+"% - using icon "+icon_id+" and the last would be "+R.drawable.r100);
+		Log.d(T,"Showing icon for "+prcnt+"% - using icon "+icon_id);
 		
 		/* create new notify with updated icon: icons are sorted integers :-) */
 		Notification this_notify = new Notification(icon_id, null, System.currentTimeMillis());

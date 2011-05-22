@@ -98,20 +98,12 @@ public class BlinkenlightsBattery extends Activity
 	}
 	
 	public void initConfigDialog() {
-		CheckBox glow    = (CheckBox)findViewById(R.id.cb_config_glow);
 		CheckBox details = (CheckBox)findViewById(R.id.cb_config_details);
 		
 		/* set checkboxes from config */
-		glow.setChecked(bconfig.GlowIsEnabled());
 		details.setChecked(bconfig.ShowDetails());
 		
 		/* add callbacks */
-		glow.setOnCheckedChangeListener(new OnCheckedChangeListener() {
-				public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-					bconfig.SetGlowIsEnabled(isChecked);
-					bb_service_connection.bbsvc.updateNotifyIcon();
-				}
-		});
 		
 		details.setOnCheckedChangeListener(new OnCheckedChangeListener() {
 				public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
