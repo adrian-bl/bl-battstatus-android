@@ -13,6 +13,35 @@
 	</TableRow>
 </TableLayout>
 
-
+	<ImageView android:layout_width="wrap_content" android:layout_height="wrap_content"
+		android:paddingTop="10dip" android:paddingRight="20dip"
+		android:id="@+id/thx0"
+		android:src="@drawable/fb_cr_h_062"
+	/>
+	<ImageView android:layout_width="wrap_content" android:layout_height="wrap_content"
+		android:paddingTop="10dip" android:paddingRight="20dip"
+		android:id="@+id/thx1"
+		android:src="@drawable/fb_cr_f_062"
+	/>
+	<ImageView android:layout_width="wrap_content" android:layout_height="wrap_content"
+		android:paddingTop="10dip" android:paddingRight="20dip"
+		android:id="@+id/thx2"
+		android:src="@drawable/fb_062"
+	/>
+	<ImageView android:layout_width="wrap_content" android:layout_height="wrap_content"
+		android:paddingTop="10dip" android:paddingRight="20dip"
+		android:id="@+id/thx3"
+		android:src="@drawable/cr_h_062"
+	/>
+	<ImageView android:layout_width="wrap_content" android:layout_height="wrap_content"
+		android:paddingTop="10dip" android:paddingRight="20dip"
+		android:id="@+id/thx4"
+		android:src="@drawable/cr_f_062"
+	/>
+	<ImageView android:layout_width="wrap_content" android:layout_height="wrap_content"
+		android:paddingTop="10dip" android:paddingRight="20dip"
+		android:id="@+id/thx5"
+		android:src="@drawable/fs_cr_h_062"
+	/>
 
 </LinearLayout>

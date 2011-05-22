@@ -28,7 +28,7 @@ public class ConfigUtil {
 	private final static String FN_PERCENTAGE = "blb-percentage"; // File to store percentage
 	private final static String FN_PLUGGED    = "blb-plugstatus"; // File to store plugstatus
 	private final static String FN_TIMESTAMP  = "blb-ts";         // Latest event timestamp
-	
+	private final static String FN_THEMEID    = "blb-theme";      // theme to use
 	private final static String FN_C_DETAILS  = "c_show_details";
 	
 	private final static String motofile      = "/sys/devices/platform/cpcap_battery/power_supply/battery/charge_counter";   // Motorola-Percentage file
@@ -63,17 +63,34 @@ public class ConfigUtil {
 	}
 	
 	public int GetIconFor(int prcnt) {
-		int setting = 0;
+		int setting = GetThemeId();
 		switch(setting) {
-			case 1:
-				return (R.drawable.fb_000 + prcnt);
-			case 2:
-				return (R.drawable.cr_f_000 + prcnt);
-			default:
+			case 0:
 				return (R.drawable.fb_cr_h_000 + prcnt);
+			case 1:
+				return (R.drawable.fb_cr_f_000 + prcnt);
+			case 2:
+				return (R.drawable.fb_000 + prcnt);
+			case 3:
+				return (R.drawable.cr_h_000 + prcnt);
+			case 4:
+				return (R.drawable.cr_f_000 + prcnt);
+			case 5:
+				return (R.drawable.fs_cr_h_000 + prcnt);
+			default:
+				return 0; // ouch!
 		}
 	}
 	
+	public void SetThemeId(int theme) {
+		tryWrite(FN_THEMEID, theme);
+	}
+	
+	public int GetThemeId() {
+		int theme = tryRead(FN_THEMEID);
+		if(theme < 0 || theme > 5) { theme = 0; }
+		return theme;
+	}
 	
 	public int GetPercentage() {
 		return tryRead(FN_PERCENTAGE);

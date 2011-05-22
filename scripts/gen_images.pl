@@ -9,7 +9,7 @@ my @colors = qw(f02c34 bb382c a1542c a16e2c a1872c 9da12c 81a12c 6ca12c 5aa12c 2
 my $crf = { size=>38, stroke=>18, points=>"18,18,8,8"   };
 my $crh = { size=>38, stroke=>6,  points=>"18,18,15,15" };
 my $fb  = { size=>38, fsize=>20, fsize_100=>19, font=>FONTPATH, o=>0, o_10=>0 };
-my $fs  = { size=>38, fsize=>14, fsize_100=>14, font=>FONTPATH, o=>0, o_10=>0 };
+my $fs  = { size=>38, fsize=>16, fsize_100=>16, font=>FONTPATH, o=>0, o_10=>0 };
 
 draw_circle("cr_f_%03d.png", $crf);
 draw_circle("cr_h_%03d.png", $crh);
