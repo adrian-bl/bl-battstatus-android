@@ -15,31 +15,31 @@
 		android:layout_width="wrap_content" android:layout_height="wrap_content"
 		android:paddingLeft="2dip" android:paddingTop="14dip"
 		android:layout_toRightOf="@+id/hintarrow"
-		android:src="@drawable/r100"
+		android:src="@drawable/fb_cr_h_100"
 	/>
 	<ImageView android:id="@+id/c2"
 		android:layout_width="wrap_content" android:layout_height="wrap_content"
 		android:paddingLeft="2dip" android:paddingTop="14dip"
 		android:layout_toRightOf="@+id/c1"
-		android:src="@drawable/r073"
+		android:src="@drawable/fb_cr_h_073"
 	/>
 	<ImageView android:id="@+id/c3"
 		android:layout_width="wrap_content" android:layout_height="wrap_content"
 		android:paddingLeft="2dip" android:paddingTop="14dip"
 		android:layout_toRightOf="@+id/c2"
-		android:src="@drawable/r051"
+		android:src="@drawable/fb_cr_h_051"
 	/>
 	<ImageView android:id="@+id/c4"
 		android:layout_width="wrap_content" android:layout_height="wrap_content"
 		android:paddingLeft="2dip" android:paddingTop="14dip"
 		android:layout_toRightOf="@+id/c3"
-		android:src="@drawable/r026"
+		android:src="@drawable/fb_cr_h_026"
 	/>
 	<ImageView android:id="@+id/c5"
 		android:layout_width="wrap_content" android:layout_height="wrap_content"
 		android:paddingLeft="2dip" android:paddingTop="14dip"
 		android:layout_toRightOf="@+id/c4"
-		android:src="@drawable/r007"
+		android:src="@drawable/fb_cr_h_007"
 	/>
 
 
