@@ -16,7 +16,6 @@ import android.content.Intent;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.util.Log;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.CheckBox;
 import android.view.View;
@@ -99,12 +98,10 @@ public class BlinkenlightsBattery extends Activity
 	
 	public void initConfigDialog() {
 		CheckBox details = (CheckBox)findViewById(R.id.cb_config_details);
-		
 		/* set checkboxes from config */
 		details.setChecked(bconfig.ShowDetails());
 		
-		/* add callbacks */
-		
+		/* add callbacks */		
 		details.setOnCheckedChangeListener(new OnCheckedChangeListener() {
 				public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 					bconfig.SetShowDetails(isChecked);

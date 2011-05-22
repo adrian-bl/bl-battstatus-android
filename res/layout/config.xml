@@ -4,33 +4,15 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     >
- 
-<TableLayout android:layout_width="fill_parent" android:layout_height="wrap_content"  android:stretchColumns="0">
-	<TableRow android:layout_width="wrap_content" android:layout_height="wrap_content">
-		<TextView android:text="@string/c_glow"></TextView>
-	
-	<ImageView android:layout_width="wrap_content" android:layout_height="wrap_content"
-		android:paddingTop="10dip"
-		android:src="@drawable/r023"
-	/>
-	<ImageView android:layout_width="wrap_content" android:layout_height="wrap_content"
-		android:paddingTop="14dip" android:paddingRight="5dip" android:paddingLeft="5dip"
-		android:src="@drawable/arrow"
-	/>
-	<ImageView android:layout_width="wrap_content" android:layout_height="wrap_content"
-		android:paddingTop="10dip" android:paddingRight="20dip"
-		android:src="@drawable/g023"
-	/>
-		<CheckBox android:id="@+id/cb_config_glow"   android:layout_height="wrap_content"></CheckBox>
-	</TableRow>
-</TableLayout>
 
 <TableLayout android:layout_width="fill_parent" android:layout_height="wrap_content" android:stretchColumns="0">
 	<TableRow android:layout_width="wrap_content" android:layout_height="wrap_content">
 		<TextView android:layout_width="fill_parent" android:text="@string/c_details"></TextView>
-		<TextView></TextView><TextView></TextView><TextView></TextView>
+		<TextView></TextView>
 		<CheckBox android:id="@+id/cb_config_details"   android:layout_height="wrap_content"></CheckBox>
 	</TableRow>
 </TableLayout>
+
+
 
 </LinearLayout>
