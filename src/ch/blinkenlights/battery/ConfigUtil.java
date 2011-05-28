@@ -66,17 +66,17 @@ public class ConfigUtil {
 		int setting = GetThemeId();
 		switch(setting) {
 			case 0:
-				return (R.drawable.fb_cr_h_000 + prcnt);
+				return (R.drawable.wfb_cr_h_000 + prcnt);
 			case 1:
-				return (R.drawable.fb_cr_f_000 + prcnt);
+				return (R.drawable.wfs_cr_h_000 + prcnt);
 			case 2:
-				return (R.drawable.fb_000 + prcnt);
+				return (R.drawable.wfb_000 + prcnt);
 			case 3:
-				return (R.drawable.cr_h_000 + prcnt);
+				return (R.drawable.bfb_cr_h_000 + prcnt);
 			case 4:
-				return (R.drawable.cr_f_000 + prcnt);
+				return (R.drawable.bfs_cr_h_000 + prcnt);
 			case 5:
-				return (R.drawable.fs_cr_h_000 + prcnt);
+				return (R.drawable.bfb_000 + prcnt);
 			default:
 				return 0; // ouch!
 		}
