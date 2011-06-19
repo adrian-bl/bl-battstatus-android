@@ -97,14 +97,24 @@ public class BlinkenlightsBattery extends Activity
 	}
 	
 	public void initConfigDialog() {
-		CheckBox details = (CheckBox)findViewById(R.id.cb_config_details);
+		CheckBox details     = (CheckBox)findViewById(R.id.cb_config_details);
+		CheckBox fahrenheit = (CheckBox)findViewById(R.id.cb_config_fahrenheit);
+		
 		/* set checkboxes from config */
 		details.setChecked(bconfig.ShowDetails());
+		fahrenheit.setChecked(bconfig.TempInFahrenheit());
 		
 		/* add callbacks */		
 		details.setOnCheckedChangeListener(new OnCheckedChangeListener() {
 				public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 					bconfig.SetShowDetails(isChecked);
+					bb_service_connection.bbsvc.updateNotifyIcon();
+				}
+		});
+		
+		fahrenheit.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+				public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+					bconfig.SetTempInFahrenheit(isChecked);
 					bb_service_connection.bbsvc.updateNotifyIcon();
 				}
 		});

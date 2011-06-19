@@ -30,7 +30,7 @@ public class ConfigUtil {
 	private final static String FN_TIMESTAMP  = "blb-ts";         // Latest event timestamp
 	private final static String FN_THEMEID    = "blb-theme";      // theme to use
 	private final static String FN_C_DETAILS  = "c_show_details";
-	
+	private final static String FN_C_FENHEIT  = "c_fahrenheit";
 	private final static String motofile      = "/sys/devices/platform/cpcap_battery/power_supply/battery/charge_counter";   // Motorola-Percentage file
 	private Context             pCTX;
 	
@@ -44,6 +44,14 @@ public class ConfigUtil {
 
 	public void SetShowDetails(boolean state) {
 		ConfigToggle(FN_C_DETAILS, state);
+	}
+	
+	public boolean TempInFahrenheit() {
+		return (ConfOptionIsSet(FN_C_FENHEIT));
+	}
+	
+	public void SetTempInFahrenheit(boolean state) {
+		ConfigToggle(FN_C_FENHEIT, state);
 	}
 	
 	public boolean IsMotorola() {

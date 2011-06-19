@@ -14,8 +14,9 @@
     <string name="hours">hours</string>
     <string name="capacity_at">capacity at</string>
     <string name="voltage">voltage</string>
-    <string name="degree">°C</string>
+    <string name="degree">°</string>
     <string name="c_glow">\'Glow\' while charging</string>
     <string name="c_details">Display voltage and temperature</string>
+    <string name="c_fahrenheit">Display temperature in fahrenheit</string>
 
 </resources>

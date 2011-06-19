@@ -14,8 +14,9 @@
     <string name="hours">Stunden</string>
     <string name="capacity_at">Akkustand:</string>
     <string name="voltage">Spannung</string>
-    <string name="degree">°C</string>
+    <string name="degree">°</string>
     <string name="c_glow">Beim laden \'glühen\'</string>
     <string name="c_details">Spannung und Temperatur anzeigen</string>
+    <string name="c_fahrenheit">Temperatur in Fahrenheit</string>
 
 </resources>

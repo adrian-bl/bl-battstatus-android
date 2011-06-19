@@ -129,12 +129,17 @@ public class BlinkenlightsBatteryService extends Service {
 		int timediff  = unixtimeAsInt() - oldts;
 		int icon_id   = bconfig.GetIconFor(prcnt);
 		
-		
 		// set details text
 		String ntext  = "";
 		if(bconfig.ShowDetails()) {
-			String dgtmp = String.valueOf(temp/10.0);
-			ntext += vx+"V, "+dgtmp+gtx(R.string.degree)+", "+gtx(R.string.capacity_at)+" "+prcnt+"% "+gtx(R.string.since)+":";
+			
+			/* create temperature string in celsius or fareinheit */
+			String dgtmp = String.valueOf(temp/10.0)+gtx(R.string.degree)+"C";
+			if(bconfig.TempInFahrenheit()) {
+				dgtmp = String.valueOf( ( (int)((temp * 1.8)+320) )/10.0 )+gtx(R.string.degree)+"F";
+			}
+			
+			ntext += vx+"V, "+dgtmp+", "+gtx(R.string.capacity_at)+" "+prcnt+"% "+gtx(R.string.since)+":";
 		}
 		else {
 			ntext += (voltage == 0 ? "" : gtx(R.string.voltage)+" "+vx+" V // ");
