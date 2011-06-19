@@ -120,14 +120,25 @@ public class BlinkenlightsBattery extends Activity
 		});
 		
 		/* add callback to all images */
-		for(int i=0; i <= 5; i++) {
-			final int thres = R.id.thx0 + i;
-			((ImageView) findViewById(thres)).setOnClickListener(new OnClickListener() {
+		updateThemeDialog();
+	}
+	
+	
+	public void updateThemeDialog() {
+		final int current_theme = bconfig.GetThemeId();
+		
+		for(int i=0; i<=5;i++) {
+			final int fi  = 0+i;
+			ImageView imv = ((ImageView) findViewById(R.id.thx0+fi));
+			imv.setBackgroundResource( (current_theme == i ? R.drawable.selected : R.drawable.not_selected ) );
+			imv.setOnClickListener(new OnClickListener() {
 				public void onClick(View v) {
-					bconfig.SetThemeId(thres - R.id.thx0);
+					bconfig.SetThemeId(fi);
 					bb_service_connection.bbsvc.updateNotifyIcon();
+					updateThemeDialog();
 			}});
 		}
+		
 	}
 	
 	

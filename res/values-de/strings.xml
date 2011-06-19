@@ -18,5 +18,6 @@
     <string name="c_glow">Beim laden \'glühen\'</string>
     <string name="c_details">Spannung und Temperatur anzeigen</string>
     <string name="c_fahrenheit">Temperatur in Fahrenheit</string>
+    <string name="c_theme">Design:</string>
 
 </resources>

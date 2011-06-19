@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <resources>
-    <string name="app_vers">1.2</string>
+    <string name="app_vers">1.3</string>
     <string name="app_name">Battery Circle</string>
     <string name="about">About</string>
     <string name="settings">Settings</string>
@@ -18,5 +18,6 @@
     <string name="c_glow">\'Glow\' while charging</string>
     <string name="c_details">Display voltage and temperature</string>
     <string name="c_fahrenheit">Display temperature in fahrenheit</string>
+    <string name="c_theme">Select a theme:</string>
 
 </resources>
