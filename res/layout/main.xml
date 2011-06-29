@@ -5,82 +5,46 @@
   android:layout_width="fill_parent" 
   android:layout_height="fill_parent"
 >
-
 	<ImageView android:id="@+id/hintarrow"
 		android:layout_width="wrap_content" android:layout_height="wrap_content"
 		android:paddingLeft="12dip" android:paddingTop="4dip"
 		android:src="@drawable/hintarrow"
 	/>
+
+<TableLayout android:layout_width="180dip" android:layout_height="wrap_content"
+ android:paddingTop="12dip" android:stretchColumns="*" android:layout_toRightOf="@+id/hintarrow">
+	<TableRow android:layout_width="wrap_content" android:layout_height="wrap_content">
+
 	<ImageView android:id="@+id/c1"
-		android:layout_width="wrap_content" android:layout_height="wrap_content"
-		android:paddingLeft="2dip" android:paddingTop="14dip"
-		android:layout_toRightOf="@+id/hintarrow"
+		android:layout_width="32dip" android:layout_height="32dip"
 		android:src="@drawable/wfb_cr_h_100"
 	/>
 	<ImageView android:id="@+id/c2"
-		android:layout_width="wrap_content" android:layout_height="wrap_content"
-		android:paddingLeft="2dip" android:paddingTop="14dip"
-		android:layout_toRightOf="@+id/c1"
+		android:layout_width="32dip" android:layout_height="32dip"
 		android:src="@drawable/wfb_cr_h_073"
 	/>
 	<ImageView android:id="@+id/c3"
-		android:layout_width="wrap_content" android:layout_height="wrap_content"
-		android:paddingLeft="2dip" android:paddingTop="14dip"
-		android:layout_toRightOf="@+id/c2"
+		android:layout_width="32dip" android:layout_height="32dip"
 		android:src="@drawable/wfb_cr_h_051"
 	/>
 	<ImageView android:id="@+id/c4"
-		android:layout_width="wrap_content" android:layout_height="wrap_content"
-		android:paddingLeft="2dip" android:paddingTop="14dip"
-		android:layout_toRightOf="@+id/c3"
+		android:layout_width="32dip" android:layout_height="32dip"
 		android:src="@drawable/wfb_cr_h_026"
 	/>
 	<ImageView android:id="@+id/c5"
-		android:layout_width="wrap_content" android:layout_height="wrap_content"
-		android:paddingLeft="2dip" android:paddingTop="14dip"
-		android:layout_toRightOf="@+id/c4"
+		android:layout_width="32dip" android:layout_height="32dip"
 		android:src="@drawable/wfb_cr_h_007"
 	/>
-
+</TableRow>
+</TableLayout>
 
 	<TextView android:id="@+id/helptxt"
 		android:layout_width="fill_parent"
 		android:layout_height="wrap_content"
-		android:paddingTop="32dip"
+		android:paddingTop="36dip"
 		android:layout_below="@+id/hintarrow"
 		android:text="@string/startup"
 	>
 	</TextView>
 	
-<!--
-	<Button android:id="@+id/hide"
-		android:layout_width="wrap_content"
-		android:layout_height="wrap_content"
-		android:text="@string/return_home"
-		android:layout_marginTop="32dip"
-		android:layout_below="@+id/helptxt"
-		android:layout_centerHorizontal="true"
-	>
-	</Button>
-
-	<Button android:id="@+id/kill"
-		android:layout_width="wrap_content"
-		android:layout_height="wrap_content"
-		android:text="@string/kill"
-		android:layout_marginTop="12dip"
-		android:layout_centerHorizontal="true"
-		android:layout_below="@+id/hide"
-	>
-	</Button>
-
-	<Button android:id="@+id/debug"
-		android:layout_width="wrap_content"
-		android:layout_height="wrap_content"
-		android:text="Debug"
-		android:layout_marginTop="12dip"
-		android:layout_centerHorizontal="true"
-		android:layout_below="@+id/kill"
-	>
-	</Button>
--->
 </RelativeLayout>
