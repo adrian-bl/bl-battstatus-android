@@ -6,7 +6,7 @@ use constant FONTPATH => "/usr/share/fonts/TTF/DejaVuSansCondensed-Bold.ttf";
 
 my @colors = qw(f02c34 bb382c a1542c a16e2c a1872c 9da12c 81a12c 6ca12c 5aa12c 2da12c 2c91a1);
 
-my $crh  = { size=>72, stroke=>12,  points=>"36,36,28,28" };
+my $crh  = { size=>72, stroke=>12,  points=>"35,36,28,28" };
 my $wfb  = { size=>72, fsize=>36, fsize_100=>34, font=>FONTPATH, x=>0, y=>0, invert=>0, name=>'wfb' };
 my $bfb  = { size=>72, fsize=>36, fsize_100=>34, font=>FONTPATH, x=>0, y=>0, invert=>1, name=>'bfb' };
 my $wfs  = { size=>72, fsize=>28, fsize_100=>28, font=>FONTPATH, x=>0, y=>1, invert=>0, name=>'wfs' };
@@ -25,7 +25,7 @@ sub draw_font {
 	
 	for((0..15,100)) { assemble_font(sprintf("digit_c_$conf->{name}_%03d.png",$_), $_, $conf);}
 	
-	$conf->{x} = int($conf->{fsize}/2.8);
+	$conf->{x} = int($conf->{fsize}/3);
 	for(0..9 ) { assemble_font(sprintf("digit_l_$conf->{name}_%03d.png",$_), $_, $conf);}
 	$conf->{x} = $conf->{x}*-1;
 	for(0..9 ) { assemble_font(sprintf("digit_r_$conf->{name}_%03d.png",$_), $_, $conf);}
