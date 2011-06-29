@@ -130,7 +130,7 @@ public class BlinkenlightsBattery extends Activity
 		for(int i=0; i<=5;i++) {
 			final int fi  = 0+i;
 			ImageView imv = ((ImageView) findViewById(R.id.thx0+fi));
-			imv.setBackgroundResource( (current_theme == i ? R.drawable.selected : R.drawable.not_selected ) );
+			imv.setBackgroundResource( (current_theme == i ? R.drawable.selected : R.drawable.notselected ) );
 			imv.setOnClickListener(new OnClickListener() {
 				public void onClick(View v) {
 					bconfig.SetThemeId(fi);
