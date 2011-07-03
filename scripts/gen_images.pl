@@ -10,8 +10,8 @@ my @colors = qw(f02c34 bb382c a1542c a16e2c a1872c 9da12c 81a12c 6ca12c 5aa12c 2
 my $crh  = { size=>72, stroke=>12,  points=>"36,34,26,26" };
 my $wfb  = { size=>72, fsize=>36, fsize_100=>34, font=>FONTPATH, x=>1, y=>-1, invert=>0, name=>'wfb' };
 my $bfb  = { size=>72, fsize=>36, fsize_100=>34, font=>FONTPATH, x=>1, y=>-1, invert=>1, name=>'bfb' };
-my $wfs  = { size=>72, fsize=>26, fsize_100=>26, font=>FONTPATH, x=>0, y=>-1, invert=>0, name=>'wfs' };
-my $bfs  = { size=>72, fsize=>26, fsize_100=>26, font=>FONTPATH, x=>0, y=>-1, invert=>1, name=>'bfs' };
+my $wfs  = { size=>72, fsize=>28, fsize_100=>28, font=>FONTPATH, x=>1, y=>-1, invert=>0, name=>'wfs' };
+my $bfs  = { size=>72, fsize=>28, fsize_100=>28, font=>FONTPATH, x=>1, y=>-1, invert=>1, name=>'bfs' };
 
 
 draw_circle("cr_h_%03d.png", $crh);
@@ -27,10 +27,12 @@ sub draw_font {
 	$conf->{fulldigit} = 1;
 	for((0..15,100)) { assemble_font(sprintf("digit_c_$conf->{name}_%03d.png",$_), $_, $conf);}
 	
+	my $real_x = $conf->{x};
+	
 	$conf->{fulldigit} = 0;
-	$conf->{x} = int($conf->{fsize}/3);
+	$conf->{x} = int($conf->{fsize}/3)+$real_x;
 	for(0..9 ) { assemble_font(sprintf("digit_l_$conf->{name}_%03d.png",$_), $_, $conf);}
-	$conf->{x} = $conf->{x}*-1;
+	$conf->{x} = -1*int($conf->{fsize}/3)+$real_x;
 	for(0..9 ) { assemble_font(sprintf("digit_r_$conf->{name}_%03d.png",$_), $_, $conf);}
 }
 
