@@ -7,18 +7,21 @@ use constant FONTPATH => "/usr/share/fonts/TTF/DejaVuSansCondensed-Bold.ttf";
 
 my @colors = qw(f02c34 bb382c a1542c a16e2c a1872c 9da12c 81a12c 6ca12c 5aa12c 2da12c 2c91a1);
 
-my $crh  = { size=>72, stroke=>12,  points=>"36,34,26,26" };
-my $wfb  = { size=>72, fsize=>36, fsize_100=>34, font=>FONTPATH, x=>1, y=>-1, invert=>0, name=>'wfb' };
-my $bfb  = { size=>72, fsize=>36, fsize_100=>34, font=>FONTPATH, x=>1, y=>-1, invert=>1, name=>'bfb' };
-my $wfs  = { size=>72, fsize=>28, fsize_100=>28, font=>FONTPATH, x=>1, y=>-1, invert=>0, name=>'wfs' };
-my $bfs  = { size=>72, fsize=>28, fsize_100=>28, font=>FONTPATH, x=>1, y=>-1, invert=>1, name=>'bfs' };
+if($ARGV[0] eq 'normal') {
+	draw_circle("cr_h_%03d.png", { size=>38, stroke=>6,  points=>"18,18,15,15" });
+	draw_font({ size=>38, fsize=>20, fsize_100=>19, font=>FONTPATH, x=>0, y=>0, ol=>1, invert=>0, name=>'wfb' });
+	draw_font({ size=>38, fsize=>20, fsize_100=>19, font=>FONTPATH, x=>0, y=>0, ol=>1, invert=>1, name=>'bfb' });
+	draw_font({ size=>38, fsize=>15, fsize_100=>15, font=>FONTPATH, x=>0, y=>0, ol=>1, invert=>0, name=>'wfs' });
+	draw_font({ size=>38, fsize=>15, fsize_100=>15, font=>FONTPATH, x=>0, y=>0, ol=>1, invert=>1, name=>'bfs' });
+}
 
-
-draw_circle("cr_h_%03d.png", $crh);
-draw_font($wfb);
-draw_font($wfs);
-draw_font($bfb);
-draw_font($bfs);
+if($ARGV[0] eq 'large') {
+	draw_circle("cr_h_%03d.png", { size=>72, stroke=>12,  points=>"36,34,26,26" });
+	draw_font({ size=>72, fsize=>36, fsize_100=>34, font=>FONTPATH, x=>1, y=>-1, ol=>2, invert=>0, name=>'wfb' });
+	draw_font({ size=>72, fsize=>36, fsize_100=>34, font=>FONTPATH, x=>1, y=>-1, ol=>2, invert=>1, name=>'bfb' });
+	draw_font({ size=>72, fsize=>28, fsize_100=>28, font=>FONTPATH, x=>1, y=>-1, ol=>2, invert=>0, name=>'wfs' });
+	draw_font({ size=>72, fsize=>28, fsize_100=>28, font=>FONTPATH, x=>1, y=>-1, ol=>2, invert=>1, name=>'bfs' });
+}
 
 
 sub draw_font {
@@ -43,13 +46,14 @@ sub assemble_font {
 	my $fsize = ($num == 100 ? $config->{fsize_100} : $config->{fsize});
 	my $xoff  = $config->{x};
 	my $yoff  = $config->{y};
+	my $ol    = $config->{ol};
 	my ($tc_out, $tc_in) = ( $config->{invert} ? ('white', 'black') : ('black' , 'white') );
 	$tc_in = "red" if $num <= 15 && $config->{fulldigit};
 	
 	$im->Read("xc:transparent");
 
-	foreach my $x (-2..2) {
-		foreach my $y (-2..2) {
+	foreach my $x ($ol*-1..$ol) {
+		foreach my $y ($ol*-1..$ol) {
 			$im->Annotate(text=>"$num", fill=>$tc_out, font=>$config->{font}, pointsize=>$fsize+0, antialias=>'true', gravity=>"Center", x=>$xoff+$x, y=>$yoff+$y);
 		}
 	}
