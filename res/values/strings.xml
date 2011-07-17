@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <resources>
-    <string name="app_vers">1.4</string>
+    <string name="app_vers">1.5</string>
     <string name="app_name">Battery Circle</string>
     <string name="about">About</string>
     <string name="settings">Settings</string>
@@ -19,5 +19,6 @@
     <string name="c_details">Display voltage and temperature</string>
     <string name="c_fahrenheit">Display temperature in fahrenheit</string>
     <string name="c_theme">Select a theme:</string>
+    <string name="c_notify_intent">Notification opens \'Battery Use\' dialog</string>
 
 </resources>
