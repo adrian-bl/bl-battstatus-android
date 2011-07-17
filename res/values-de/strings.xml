@@ -19,6 +19,6 @@
     <string name="c_details">Spannung und Temperatur anzeigen</string>
     <string name="c_fahrenheit">Temperatur in Fahrenheit</string>
     <string name="c_theme">Design:</string>
-    <string name="c_notify_intent">Notification öffnet \'Batterie Verbrauch\' Dialog</string>
+    <string name="c_notify_intent">Notifikation öffnet \'Akkuverbrauch\'</string>
 
 </resources>
