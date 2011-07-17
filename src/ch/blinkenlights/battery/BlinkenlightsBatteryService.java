@@ -34,8 +34,6 @@ public class BlinkenlightsBatteryService extends Service {
 	private int[] battery_state = new int[4];
 	
 	private NotificationManager notify_manager;
-	private PendingIntent       notify_int_pus;  /* systems power usage intent */
-	private PendingIntent       notify_int_own;  /* start ourself */
 	private ConfigUtil          bconfig;
 	
 	@Override
@@ -56,8 +54,6 @@ public class BlinkenlightsBatteryService extends Service {
 		
 		/* create notification manager stuff and register ourself as a service */
 		notify_manager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-		notify_int_own = PendingIntent.getActivity(this, 0, (new Intent(this, BlinkenlightsBattery.class)), 0);
-		notify_int_pus = PendingIntent.getActivity(this, 0, (new Intent(Intent.ACTION_POWER_USAGE_SUMMARY).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)), 0);
 		
 		registerReceiver(bb_bcreceiver, new IntentFilter(Intent.ACTION_BATTERY_CHANGED));
 		Log.d(T,"+++++ onCreate() finished - broadcaster registered +++++");
@@ -162,7 +158,7 @@ public class BlinkenlightsBatteryService extends Service {
 		/* create new notify with updated icon: icons are sorted integers :-) */
 		Notification this_notify = new Notification(icon_id, null, System.currentTimeMillis());
 		this_notify.flags |= Notification.FLAG_ONGOING_EVENT | Notification.FLAG_NO_CLEAR;
-		this_notify.setLatestEventInfo(ctx, ntitle, ntext, ( bconfig.NotifyClickOpensPowerUsage() ? notify_int_pus : notify_int_own ) );
+		this_notify.setLatestEventInfo(ctx, ntitle, ntext, getConfiguredIntent() );
 		notify_manager.notify(0, this_notify);
 	}
 	
@@ -182,6 +178,17 @@ public class BlinkenlightsBatteryService extends Service {
 	
 	public void debug() {
 		Log.d(T, "+++ dumping status ++++");
+	}
+	
+	public PendingIntent getConfiguredIntent() {
+		PendingIntent ret = null;
+		if(bconfig.NotifyClickOpensPowerUsage()) {
+			ret = PendingIntent.getActivity(this, 0, (new Intent(Intent.ACTION_POWER_USAGE_SUMMARY)), 0);
+		}
+		else {
+			ret = PendingIntent.getActivity(this, 0, (new Intent(this, BlinkenlightsBattery.class)), 0);
+		}
+		return ret;
 	}
 	
 }
