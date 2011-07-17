@@ -60,7 +60,6 @@ public class BlinkenlightsBattery extends Activity
 	protected void onDestroy() {
 		super.onDestroy();
 		unbindService(bb_service_connection);
-		Log.v(T, "++ on destroy finished ++");
 	}
 	
 	@Override
