@@ -3,7 +3,7 @@ How to compile:
 
 Run
  $ android update project --path . --target "android-4"
- $ ./update_icons.sh
+ $ make refresh
 
 then:
  $ ant debug
