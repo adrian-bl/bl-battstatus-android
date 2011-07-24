@@ -183,7 +183,7 @@ public class BlinkenlightsBatteryService extends Service {
 	public PendingIntent getConfiguredIntent() {
 		PendingIntent ret = null;
 		if(bconfig.NotifyClickOpensPowerUsage()) {
-			ret = PendingIntent.getActivity(this, 0, (new Intent(Intent.ACTION_POWER_USAGE_SUMMARY)), 0);
+			ret = PendingIntent.getActivity(this, 0, (new Intent(Intent.ACTION_POWER_USAGE_SUMMARY)), PendingIntent.FLAG_UPDATE_CURRENT);
 		}
 		else {
 			ret = PendingIntent.getActivity(this, 0, (new Intent(this, BlinkenlightsBattery.class)), 0);
