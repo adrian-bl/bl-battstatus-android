@@ -47,4 +47,23 @@
 	>
 	</TextView>
 	
+	
+
+	<ImageView android:id="@+id/hintarrowflip"
+		android:layout_width="wrap_content" android:layout_height="wrap_content"
+		android:paddingLeft="12dip"
+		android:paddingBottom="20dip"
+		android:layout_alignParentBottom="true"
+		android:src="@drawable/hintarrowflip"
+	/>
+	
+	<TextView android:id="@+id/hintmenu"
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content"
+		android:layout_toRightOf="@+id/hintarrowflip"
+		android:layout_alignParentBottom="true"
+		android:paddingBottom="20dip"
+		android:text="@string/menuhint"
+	/>
+	
 </RelativeLayout>
