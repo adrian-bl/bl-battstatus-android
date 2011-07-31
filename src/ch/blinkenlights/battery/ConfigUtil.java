@@ -57,14 +57,12 @@ public class ConfigUtil {
 	}
 	
 	
-	/* configures action for notification clicks - this is REVERSED for historical
-	   reasons */
 	public boolean NotifyClickOpensPowerUsage() {
-		return (!ConfOptionIsSet(FN_C_NTFYCLK));
+		return (ConfOptionIsSet(FN_C_NTFYCLK));
 	}
 	
 	public void SetNotifyClickOpensPowerUsage(boolean state) {
-		ConfigToggle(FN_C_NTFYCLK, !state);
+		ConfigToggle(FN_C_NTFYCLK, state);
 	}
 	
 	
