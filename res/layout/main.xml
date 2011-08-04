@@ -42,28 +42,31 @@
 		android:layout_width="fill_parent"
 		android:layout_height="wrap_content"
 		android:paddingTop="36dip"
+		android:paddingLeft="4dip"
 		android:layout_below="@+id/hintarrow"
 		android:text="@string/startup"
 	>
 	</TextView>
 	
 	
-
-	<ImageView android:id="@+id/hintarrowflip"
-		android:layout_width="wrap_content" android:layout_height="wrap_content"
-		android:paddingLeft="12dip"
-		android:paddingBottom="20dip"
+	
+	<ImageView android:id="@+id/hintarrowdown"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:paddingLeft="32dip"
+		android:paddingBottom="12dip"
 		android:layout_alignParentBottom="true"
-		android:src="@drawable/hintarrowflip"
+		android:src="@drawable/hintarrowdown"
 	/>
 	
 	<TextView android:id="@+id/hintmenu"
 		android:layout_width="fill_parent"
 		android:layout_height="wrap_content"
-		android:layout_toRightOf="@+id/hintarrowflip"
-		android:layout_alignParentBottom="true"
-		android:paddingBottom="20dip"
+		android:layout_above="@+id/hintarrowdown"
+		android:paddingLeft="4dip"
+		android:paddingBottom="12dip"
 		android:text="@string/menuhint"
 	/>
+	
 	
 </RelativeLayout>
