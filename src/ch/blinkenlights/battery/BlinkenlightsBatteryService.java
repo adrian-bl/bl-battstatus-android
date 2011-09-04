@@ -94,7 +94,7 @@ public class BlinkenlightsBatteryService extends Service {
 		
 		/* defy (and other stupid-as-heck motorola phones return the capacity in 10% steps.
 		   ..but sysfs knows the real 1%-res value */
-		if(bconfig.IsMotorola()) {
+		if(bconfig.IsMotorola() && bconfig.GetMotorolaPercent() != 0) {
 			prcnt = bconfig.GetMotorolaPercent();
 		}
 		
