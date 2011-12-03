@@ -99,11 +99,13 @@ public class BlinkenlightsBattery extends Activity
 		CheckBox details      = (CheckBox)findViewById(R.id.cb_config_details);
 		CheckBox fahrenheit   = (CheckBox)findViewById(R.id.cb_config_fahrenheit);
 		CheckBox notifyintent = (CheckBox)findViewById(R.id.cb_config_notify_intent);
+		CheckBox chargeglow   = (CheckBox)findViewById(R.id.cb_config_charge_notify);
 		
 		/* set checkboxes from config */
 		details.setChecked(bconfig.ShowDetails());
 		fahrenheit.setChecked(bconfig.TempInFahrenheit());
 		notifyintent.setChecked(bconfig.NotifyClickOpensPowerUsage());
+		chargeglow.setChecked(bconfig.ChargeGlow());
 		
 		/* add callbacks */		
 		details.setOnCheckedChangeListener(new OnCheckedChangeListener() {
@@ -123,6 +125,13 @@ public class BlinkenlightsBattery extends Activity
 		notifyintent.setOnCheckedChangeListener(new OnCheckedChangeListener() {
 				public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 					bconfig.SetNotifyClickOpensPowerUsage(isChecked);
+					bb_service_connection.bbsvc.updateNotifyIcon();
+				}
+		});
+		
+		chargeglow.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+				public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+					bconfig.SetChargeGlow(isChecked);
 					bb_service_connection.bbsvc.updateNotifyIcon();
 				}
 		});

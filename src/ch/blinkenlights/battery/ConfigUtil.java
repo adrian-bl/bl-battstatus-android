@@ -32,11 +32,20 @@ public class ConfigUtil {
 	private final static String FN_C_DETAILS  = "c_show_details";
 	private final static String FN_C_FENHEIT  = "c_fahrenheit";
 	private final static String FN_C_NTFYCLK  = "c_notify_click";
+	private final static String FN_C_CHRGNTFY = "c_charge_glowstate";
 	private final static String motofile      = "/sys/devices/platform/cpcap_battery/power_supply/battery/charge_counter";   // Motorola-Percentage file
 	private Context             pCTX;
 	
 	public ConfigUtil(Context what) {
 		pCTX = what;
+	}
+	
+	public boolean ChargeGlow() {
+		return !(ConfOptionIsSet(FN_C_CHRGNTFY));
+	}
+	
+	public void SetChargeGlow(boolean state) {
+		ConfigToggle(FN_C_CHRGNTFY, !state);
 	}
 	
 	public boolean ShowDetails() {
@@ -82,10 +91,10 @@ public class ConfigUtil {
 		tryWrite(FN_PLUGGED,what);
 	}
 	
-	public int GetIconFor(int prcnt, int plugged) {
+	public int GetIconFor(int prcnt, boolean plugged) {
 		int setting = GetThemeId();
 		
-		if(plugged != 0) {
+		if(plugged) {
 			if(setting >= 3) {
 				setting -= 3; /* black -> white */
 			}

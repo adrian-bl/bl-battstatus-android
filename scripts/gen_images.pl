@@ -55,9 +55,9 @@ sub assemble_font {
 	my $xoff  = $config->{x};
 	my $yoff  = $config->{y};
 	my $ol    = $config->{ol};
-	my ($tc_out, $tc_in) = qw(white black);
-	   ($tc_out, $tc_in) = qw(black white) if($config->{theme} == 1);
-	   ($tc_out, $tc_in) = qw(brown  gold) if($config->{theme} == GOLDEN);
+	my ($tc_out, $tc_in) = qw(black white);
+	   ($tc_out, $tc_in) = qw(white black) if($config->{theme} == 1);
+	   ($tc_out, $tc_in) = qw(#6d6725  #ffef37) if($config->{theme} == GOLDEN);
 	
 	$tc_in = "red" if $num <= 15 && $config->{fulldigit} && $config->{theme} != GOLDEN;
 	
