@@ -82,9 +82,26 @@ public class ConfigUtil {
 		tryWrite(FN_PLUGGED,what);
 	}
 	
-	public int GetIconFor(int prcnt) {
+	public int GetIconFor(int prcnt, int plugged) {
 		int setting = GetThemeId();
+		
+		if(plugged != 0) {
+			if(setting >= 3) {
+				setting -= 3; /* black -> white */
+			}
+			setting -= 3;   /* white -> golden */
+		}
+		
 		switch(setting) {
+			/* plugged themes */
+			case -3:
+				return (R.drawable.gfb_cr_h_000 + prcnt);
+			case -2:
+				return (R.drawable.gfs_cr_h_000 + prcnt);
+			case -1:
+				return (R.drawable.gfb_000 + prcnt);
+			
+			/* unplugged themes */
 			case 0:
 				return (R.drawable.wfb_cr_h_000 + prcnt);
 			case 1:

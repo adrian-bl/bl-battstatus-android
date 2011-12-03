@@ -123,7 +123,7 @@ public class BlinkenlightsBatteryService extends Service {
 		                 (curplug == 0 ? gtx(R.string.discharging_from)+" "+oldprcnt+"%" : 
 		                 gtx(R.string.charging_from)+" "+oldprcnt+"%"));
 		int timediff  = unixtimeAsInt() - oldts;
-		int icon_id   = bconfig.GetIconFor(prcnt);
+		int icon_id   = bconfig.GetIconFor(prcnt, curplug);
 		
 		// set details text
 		String ntext  = "";
