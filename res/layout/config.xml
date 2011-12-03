@@ -14,7 +14,7 @@
 
 
 	<TableRow android:layout_width="wrap_content" android:layout_height="wrap_content">
-		<TextView android:layout_width="fill_parent" android:text="FIXME CHARGE"></TextView>
+		<TextView android:layout_width="fill_parent" android:text="@string/c_glow"></TextView>
 		<CheckBox android:id="@+id/cb_config_charge_notify" android:layout_height="wrap_content"></CheckBox>
 	</TableRow>
 

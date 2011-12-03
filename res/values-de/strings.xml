@@ -5,7 +5,6 @@
     <string name="about">Infos</string>
     <string name="settings">Einstellungen</string>
     <string name="startup">\'Battery Circle\' zeigt nun den aktuellen Batteriestand in der Statusleiste an. Die Applikation wird sich beim nächsten Boot selbständig starten.</string>
-    <string name="menuhint">Tipp: Drücken sie die \'Menü\' Taste um die Applikation zu konfigurieren.</string>
     <string name="oops">Uuups! Hintergrunddienst konnte nicht gestartet werden - dies sollte nicht passieren :-(</string>
     <string name="kill">Beenden</string>
     <string name="charging_from">Lade von</string>
@@ -21,5 +20,4 @@
     <string name="c_fahrenheit">Temperatur in Fahrenheit</string>
     <string name="c_theme">Design:</string>
     <string name="c_notify_intent">Notifikation öffnet \'Akkuverbrauch\'</string>
-
 </resources>

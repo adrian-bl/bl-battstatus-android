@@ -5,7 +5,6 @@
     <string name="about">About</string>
     <string name="settings">Settings</string>
     <string name="startup">\'Battery Circle\' is now running and will startup by itself on next boot.</string>
-    <string name="menuhint">Hint: Press the \'Menu\' button to configure the application.</string>
     <string name="oops">Ooops! Failed to start service, this should not happen :-(</string>
     <string name="kill">Quit</string>
     <string name="charging_from">Charging from</string>
