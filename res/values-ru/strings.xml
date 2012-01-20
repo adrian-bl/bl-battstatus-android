@@ -1,0 +1,26 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+
+<resources>
+<string name="app_vers">1.6</string>
+<string name="app_name">Battery Circle</string>
+<string name="about">О программе</string>
+<string name="settings">Настойки</string>
+<string name="startup">\'Battery Circle\' сейчас работает и будет автоматически запущен при
+следующей загрузке.</string>
+<string name="oops">Ууупс! Не удалось запустить службу, этого не должно было случится :-(</string>
+<string name="kill">Выход</string>
+<string name="charging_from">Зарядка от</string>
+<string name="discharging_from">Разрядка от</string>
+<string name="fully_charged">Полностью заряжена</string>
+<string name="since">с</string>
+<string name="hours">часов</string>
+<string name="capacity_at">осталось на </string>
+<string name="voltage">напряжение</string>
+<string name="degree">°</string>
+<string name="c_glow">\'Свет\' во время зарядки</string>
+<string name="c_details">Отображать напряжение и температуру</string>
+<string name="c_fahrenheit">Отображать температуру по Фаренгейту</string>
+<string name="c_theme">Выберите тему:</string>
+<string name="c_notify_intent">Уведомление открывает окно\n\'Использование батареи\'</string>
+
+</resources>
