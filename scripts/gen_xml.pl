@@ -29,6 +29,7 @@ sub write_xml {
 	print XML '<layer-list xmlns:android="http://schemas.android.com/apk/res/android">'."\n";
 	foreach (@parts) {
 		print XML "<item android:drawable=\"\@drawable/$_\" />\n";
+		print XML "<item android:drawable=\"\@drawable/$_\" />\n";
 	}
 	print XML "</layer-list>\n";
 	close(XML);
