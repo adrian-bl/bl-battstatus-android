@@ -2,7 +2,7 @@
  *
  * Part of ch.blinkenlights.battery
  *
- * (C) 2011 Adrian Ulrich
+ * (C) 2011-2012 Adrian Ulrich
  *
  * Licensed under the GPLv2
  *
@@ -162,7 +162,7 @@ public class BlinkenlightsBattery extends Activity
 	private void showAbout() {
 		AlertDialog alertDialog = new AlertDialog.Builder(this).create();
 		alertDialog.setTitle("About");
-		alertDialog.setMessage("Battery Circle "+getResources().getText(R.string.app_vers)+"\n(C) 2011 Adrian Ulrich");
+		alertDialog.setMessage("Battery Circle "+getResources().getText(R.string.app_vers)+"\n(C) 2012 Adrian Ulrich");
 		alertDialog.setButton("OK", new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog, int which) {
 				return;
