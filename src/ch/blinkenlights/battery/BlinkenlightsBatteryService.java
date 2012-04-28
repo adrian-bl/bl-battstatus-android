@@ -135,22 +135,22 @@ public class BlinkenlightsBatteryService extends Service {
 				dgtmp = String.valueOf( ( (int)((temp * 1.8)+320) )/10.0 )+gtx(R.string.degree)+"F";
 			}
 			
-			ntext += vx+"V, "+dgtmp+", "+gtx(R.string.capacity_at)+" "+prcnt+"% "+gtx(R.string.since)+":";
+			ntext += vx+"V, "+dgtmp+", "+gtx(R.string.capacity_at)+" "+prcnt+"% "+ __ICS_FILTER__( gtx(R.string.since)+":" );
 		}
 		else {
 			ntext += (voltage == 0 ? "" : gtx(R.string.voltage)+" "+vx+" V // ");
-			ntext += gtx(R.string.capacity_at)+" "+prcnt+"% "+gtx(R.string.since)+":";
+			ntext += gtx(R.string.capacity_at)+" "+prcnt+"% "+ __ICS_FILTER__( gtx(R.string.since)+":" );
 		}
 		// end details text
 		
 		
 		if(timediff > 60*60*2) {
-			ntitle += " "+gtx(R.string.since)+" "+(int)(timediff/60/60)+" "+gtx(R.string.hours);
+			ntitle += __ICS_FILTER__( " "+gtx(R.string.since)+" "+(int)(timediff/60/60)+" "+gtx(R.string.hours) );
 		}
 		else {
 			String fmt_style     = (DateFormat.is24HourFormat(ctx) ? "HH:mm" : "h:mm aa");
 			SimpleDateFormat sdf = new SimpleDateFormat(fmt_style);
-			ntitle += " "+gtx(R.string.since)+" "+sdf.format( new Date( (long)oldts*1000 ) );
+			ntitle += __ICS_FILTER__( " "+gtx(R.string.since)+" "+sdf.format( new Date( (long)oldts*1000 ) ) );
 		}
 		
 		Log.d(T,"Showing icon for "+prcnt+"% - using icon "+icon_id);
@@ -168,6 +168,15 @@ public class BlinkenlightsBatteryService extends Service {
 	
 	private final int unixtimeAsInt() {
 		return (int) (System.currentTimeMillis() / 1000L);
+	}
+	
+	private String __ICS_FILTER__(String s) {
+		if(android.os.Build.VERSION.SDK_INT >= 14) {
+			return "";
+		}
+		else {
+			return s;
+		}
 	}
 	
 	public void harakiri() {
