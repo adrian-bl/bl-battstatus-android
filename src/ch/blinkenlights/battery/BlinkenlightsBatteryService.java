@@ -119,11 +119,11 @@ public class BlinkenlightsBatteryService extends Service {
 		
 		// prepare interface texts
 		String vx      = String.valueOf(voltage/1000.0);
+		String ntext   = "";
 		String ntitle  = ((prcnt == 100 && curplug == 1) ? gtx(R.string.fully_charged) : 
 		                  (curplug == 0 ? gtx(R.string.discharging_from)+" "+oldprcnt+"%" : 
-		                  gtx(R.string.charging_from)+" "+oldprcnt+"%"));
-		String timetxt = getTimeString(oldts);
-		String ntext   = "";
+		                  gtx(R.string.charging_from)+" "+oldprcnt+"%"));   /* Discharging from 99% */
+		String timetxt = getTimeString(oldts);                              /* 12 hours */
 		int icon_id    = bconfig.GetIconFor(prcnt, (curplug!=0 && bconfig.ChargeGlow()) );
 		
 		// set details text
@@ -152,7 +152,7 @@ public class BlinkenlightsBatteryService extends Service {
 			ntext  += " "+gtx(R.string.since)+":";          /* add 'since' before event TS */
 		}
 		
-		Log.d(T,"Showing icon for "+prcnt+"% - using icon "+icon_id);
+		// Log.d(T,"Showing icon for "+prcnt+"% - using icon "+icon_id);
 		
 		/* create new notify with updated icon: icons are sorted integers :-) */
 		Notification this_notify = new Notification(icon_id, null, System.currentTimeMillis());
@@ -186,7 +186,7 @@ public class BlinkenlightsBatteryService extends Service {
 		return s;
 	}
 	
-	
+	/* Return an empty string on ICS */
 	private String _ICSFILTER_(String s) {
 		if(isICS() == true) { return ""; }
 		else                { return s;  }
