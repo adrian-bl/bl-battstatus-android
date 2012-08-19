@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <resources>
-    <string name="app_vers">1.8</string>
+    <string name="app_vers">1.81</string>
     <string name="app_name">Battery Circle</string>
     <string name="about">About</string>
     <string name="settings">Settings</string>

@@ -85,6 +85,20 @@
 		/>
 		<TextView></TextView>
 	</TableRow>
+
+	<TableRow android:layout_width="wrap_content" android:layout_height="wrap_content" android:stretchColumns="0,4">
+		<TextView></TextView>
+		<TextView></TextView>
+		<ImageView android:layout_width="56dip" android:layout_height="56dip"
+			android:padding="12dip"
+			android:id="@+id/thx6"
+			android:src="@drawable/cr_h_062"
+		/>
+		<TextView></TextView>
+		<TextView></TextView>
+	</TableRow>
+
+
 </TableLayout>
 
 </LinearLayout>

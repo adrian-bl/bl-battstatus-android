@@ -94,7 +94,10 @@ public class ConfigUtil {
 	public int GetIconFor(int prcnt, boolean plugged) {
 		int setting = GetThemeId();
 		
-		if(plugged) {
+		if(plugged && setting != 6) {
+			/* Calculate 'glow' theme if we are on AC
+			** and NOT using theme 6 (= circle only) */
+			
 			if(setting >= 3) {
 				setting -= 3; /* black -> white */
 			}
@@ -104,25 +107,27 @@ public class ConfigUtil {
 		switch(setting) {
 			/* plugged themes */
 			case -3:
-				return (R.drawable.gfb_cr_h_000 + prcnt);
+				return (R.drawable.gfb_cr_h_000 + prcnt);    /* big golden font */
 			case -2:
-				return (R.drawable.gfs_cr_h_000 + prcnt);
+				return (R.drawable.gfs_cr_h_000 + prcnt);    /* small golden font */
 			case -1:
-				return (R.drawable.gfb_000 + prcnt);
+				return (R.drawable.gfb_000 + prcnt);        /* golden font */
 			
 			/* unplugged themes */
 			case 0:
-				return (R.drawable.wfb_cr_h_000 + prcnt);
+				return (R.drawable.wfb_cr_h_000 + prcnt);   /* white, big font */
 			case 1:
-				return (R.drawable.wfs_cr_h_000 + prcnt);
+				return (R.drawable.wfs_cr_h_000 + prcnt);   /* white, small font */
 			case 2:
-				return (R.drawable.wfb_000 + prcnt);
+				return (R.drawable.wfb_000 + prcnt);        /* white big font only */
 			case 3:
-				return (R.drawable.bfb_cr_h_000 + prcnt);
+				return (R.drawable.bfb_cr_h_000 + prcnt);   /* black, big font */
 			case 4:
-				return (R.drawable.bfs_cr_h_000 + prcnt);
+				return (R.drawable.bfs_cr_h_000 + prcnt);   /* black, small font */
 			case 5:
-				return (R.drawable.bfb_000 + prcnt);
+				return (R.drawable.bfb_000 + prcnt);        /* black big font only */
+			case 6:
+				return (R.drawable.cr_h_000 + prcnt);       /* circle only */
 			default:
 				return 0; // ouch!
 		}
@@ -135,7 +140,7 @@ public class ConfigUtil {
 	public int GetThemeId() {
 		int theme = tryRead(FN_THEMEID);
 		
-		if(theme < 0 || theme > 5) {
+		if(theme < 0 || theme > 6) {
 			Log.v(T,"setting default theme, was: "+theme);
 			theme = 0;
 			SetThemeId(theme);

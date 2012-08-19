@@ -144,7 +144,7 @@ public class BlinkenlightsBattery extends Activity
 	public void updateThemeDialog() {
 		final int current_theme = bconfig.GetThemeId();
 		
-		for(int i=0; i<=5;i++) {
+		for(int i=0; i<=6;i++) {
 			final int fi  = 0+i;
 			ImageView imv = ((ImageView) findViewById(R.id.thx0+fi));
 			imv.setBackgroundResource( (current_theme == i ? R.drawable.selected : R.drawable.notselected ) );
