@@ -145,7 +145,7 @@ public class BlinkenlightsBatteryService extends Service {
 		
 		
 		if(isICS() == true) {
-			ntext = "...since "+timetxt+" / "+ntext; /* 'since' is located in the text section on ICS */
+			ntext = "..."+gtx(R.string.since)+" "+timetxt+" / "+ntext; /* 'since' is located in the text section on ICS */
 		}
 		else {
 			ntitle += " "+gtx(R.string.since)+": "+timetxt; /* add 'since' info to title */
