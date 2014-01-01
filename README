@@ -2,7 +2,7 @@ How to compile:
 
 
 Run
- $ android update project --path . --target "android-4"
+ $ android update project --path . --target "android-10"
  $ make refresh
 
 then:

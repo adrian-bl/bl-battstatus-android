@@ -13,6 +13,7 @@ import android.app.Service;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.app.AlarmManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -20,6 +21,7 @@ import android.content.IntentFilter;
 import android.os.Binder;
 import android.os.Handler;
 import android.os.IBinder;
+import android.os.SystemClock;
 import android.util.Log;
 import android.content.Intent;
 import android.text.format.DateFormat;
@@ -32,7 +34,6 @@ public class BlinkenlightsBatteryService extends Service {
 	private final static String T             = "BlinkenlightsBatteryService.class: ";                                       // Log Token
 	private final IBinder bb_binder           = new LocalBinder();
 	private int[] battery_state = new int[4];
-	
 	private NotificationManager notify_manager;
 	private ConfigUtil          bconfig;
 	
@@ -59,10 +60,29 @@ public class BlinkenlightsBatteryService extends Service {
 		Log.d(T,"+++++ onCreate() finished - broadcaster registered +++++");
 	}
 	
-	public void onDestory() {
+	@Override
+	public void onDestroy() {
 		unregisterReceiver(bb_bcreceiver);
 	}
-	
+
+	@Override
+	public int onStartCommand(Intent intent, int flags, int startId) {
+		if (android.os.Build.VERSION.SDK_INT >= 19) {
+			/* 
+			 * KitKat is pretty stupid: It doesn't allow us to register the recevier via AndroidManifest
+			 * and will silently kill the service because we are considered as 'idle' and then 
+			 * fails to re-start us on the next battery event.
+			 * Well: We can be stupid too and simply trigger an alarm each ~26 minutest to let
+			 * android think we are doing something + restart ourselfs if we are killed
+			 * (android triggers the kill each 30 minutes
+			 */
+			long triggerAt = SystemClock.elapsedRealtime() + 1600000; // 26.6 minutes
+			AlarmManager am = (AlarmManager) getApplicationContext().getSystemService(Context.ALARM_SERVICE);
+			am.set(AlarmManager.ELAPSED_REALTIME, triggerAt, PendingIntent.getService(this, 0, (new Intent(this, BlinkenlightsBatteryService.class)), PendingIntent.FLAG_ONE_SHOT) );
+		}
+		return START_REDELIVER_INTENT;
+	}
+
 	/* Receives battery_changed events */
 	private final BroadcastReceiver bb_bcreceiver = new BroadcastReceiver() {
 		@Override
@@ -200,7 +220,6 @@ public class BlinkenlightsBatteryService extends Service {
 	
 	public void harakiri() {
 		Log.d(T, "terminating myself - unregistering receiver");
-		unregisterReceiver(bb_bcreceiver);
 		notify_manager.cancelAll();
 	}
 	
