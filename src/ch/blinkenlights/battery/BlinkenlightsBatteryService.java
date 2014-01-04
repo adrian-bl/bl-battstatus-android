@@ -61,11 +61,6 @@ public class BlinkenlightsBatteryService extends Service {
 	}
 	
 	@Override
-	public void onDestroy() {
-		unregisterReceiver(bb_bcreceiver);
-	}
-
-	@Override
 	public int onStartCommand(Intent intent, int flags, int startId) {
 		if (android.os.Build.VERSION.SDK_INT >= 19) {
 			/* 
@@ -80,7 +75,7 @@ public class BlinkenlightsBatteryService extends Service {
 			AlarmManager am = (AlarmManager) getApplicationContext().getSystemService(Context.ALARM_SERVICE);
 			am.set(AlarmManager.ELAPSED_REALTIME, triggerAt, PendingIntent.getService(this, 0, (new Intent(this, BlinkenlightsBatteryService.class)), PendingIntent.FLAG_ONE_SHOT) );
 		}
-		return START_REDELIVER_INTENT;
+		return START_STICKY;
 	}
 
 	/* Receives battery_changed events */
@@ -221,6 +216,7 @@ public class BlinkenlightsBatteryService extends Service {
 	public void harakiri() {
 		Log.d(T, "terminating myself - unregistering receiver");
 		notify_manager.cancelAll();
+		unregisterReceiver(bb_bcreceiver);
 	}
 	
 	public void debug() {
