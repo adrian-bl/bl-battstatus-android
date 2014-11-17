@@ -1,7 +1,7 @@
 #!/usr/bin/perl
 use strict;
 
-foreach my $font_type qw(bfb bfs wfb wfs gfs gfb) {
+foreach my $font_type (qw(bfb bfs wfb wfs gfs gfb)) {
 	
 	# create special fonts: the red 0-15 and 100
 	foreach my $special_font (0..15,100) {
